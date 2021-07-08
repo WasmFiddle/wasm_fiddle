@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Test syntax highlighting</title>
+        <meta charset="utf-8">
+        <lang></lang>
+        <link href="css/prism.css" rel="stylesheet">
+        <link href="css/editor.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="user-input">
+            <form>
+                <select id="selected-lang">
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                    <option value="rust">Rust</option>
+                </select>
+            </form>
+            <div class="code-editor line-numbers">
+                <textarea id="editing" spellcheck="false"></textarea>
+                <pre id="highlighting" aria-hidden="true"><code class="language-clike" id="highlighting-content"></code></pre>
+            </div>
+        </div>
+        <script src="js/prism.js"></script>
+        <script src="js/editor.js"></script>
+    </body>
+</html>
