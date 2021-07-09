@@ -19,7 +19,7 @@
     <title>WASM Fiddle</title>
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-primary bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <!-- Will need to update this with the logo that Daniel made -->
@@ -36,7 +36,7 @@
     </nav>
     <div class="container pt-5 pb-2">
       <div class="row">
-        <div class="col">
+        <div class="col-5">
           <input
             type="radio"
             class="btn-check mx-2"
@@ -65,22 +65,34 @@
           />
           <label class="btn btn-secondary" for="option4">Rust</label>
         </div>
-        <div class="col"></div>
-        <div class="col">Output</div>
+        <div class="col-2"></div>
+        <div class="col-5">
+          <p class="fs-3">Output</p>
+        </div>
       </div>
     </div>
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-5">
           <div class="form-group">
             <textarea class="form-control" rows="10" id="comment"></textarea>
           </div>
         </div>
-        <div class="col pt-5 text-center">
-          <button type="button" class="btn btn-success">Go!</button>
+        <div class="col-2 pt-5 text-center">
+          <button type="button" class="btn btn-lg btn-success">Go!</button>
         </div>
-        <div class="col">
-            <samp>This text is meant to be treated as sample output from a computer program.</samp>
+        <div class="col-5 bg-light">
+          <samp
+            >This text is meant to be treated as sample output from a computer
+            program.</samp
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2"></div>
+        <div class="col-5 pt-3">
+          <button type="button" class="btn btn-info">Embed</button>
         </div>
       </div>
     </div>
