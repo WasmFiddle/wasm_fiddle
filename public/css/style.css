@@ -43,6 +43,8 @@ p {margin: 0;}
     padding: 0 2%;
 }
 
+.container-fluid{ background: #f5f2f095 ;}
+
 .container-fluid h4{
     margin: 2%;
     font-weight: bolder;
@@ -71,8 +73,6 @@ p {margin: 0;}
     height: 100%;
     text-align: left;
     white-space: pre-line;
-    background: white;
-    border-radius: .3em;
 }
 
 #embed{

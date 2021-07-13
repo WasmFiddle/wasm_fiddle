@@ -39,7 +39,7 @@
     /* overlay */
     color: transparent;
     background: transparent;
-    caret-color: white;
+    caret-color: #333;
     z-index: 1;
 
     /* sizing */
@@ -47,6 +47,11 @@
     padding: 1em 0 1em 60.8px;
     outline: none;
     resize: none;
+}
+
+#highlighting, #output {
+    background: #f5f2f095;
+    border-radius: .3em;
 }
 
 #highlighting {                    
