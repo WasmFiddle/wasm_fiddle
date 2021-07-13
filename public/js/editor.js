@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function langSelector(){
+<<<<<<< HEAD
     document.getElementsByName("options").forEach(element => {
         element.addEventListener('click', ()=>{updateLang(element.value)})
     });
@@ -24,6 +25,18 @@ function updateLang(selectedLang){
     let codeBlock = document.getElementById("highlighting-content");
 
     let lang = selectedLang == 'rust' ? 'rust' : 'clike';
+=======
+    let menu = document.getElementById("selected-lang");
+    menu.addEventListener('change', updateLang);
+}
+
+function updateLang(){
+    let selection = document.getElementById("selected-lang");
+    let preBlock = document.getElementById("highlighting");
+    let codeBlock = document.getElementById("highlighting-content");
+
+    let lang = selection.value == 'rust' ? 'rust' : 'clike';
+>>>>>>> 223288b34cfc3a62199d018e3d2d44dfa388db9d
 
     preBlock.className = `language-${lang}`;
     codeBlock.className = `language-${lang}`;
