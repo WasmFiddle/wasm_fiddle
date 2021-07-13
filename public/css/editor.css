@@ -1,0 +1,59 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.user-input{
+    margin: 2vh 2.5vw;
+}
+.code-editor {
+    position: relative;
+    width: 45vw;
+    height: 50vh;
+}
+
+.code-editor > * {
+    font-size: 1em;
+    line-height: 1.5;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+#highlighting-content.child:after{
+    content: "";
+    display: block;
+    position: absolute;
+    right: 2rem;
+    width: 2rem;
+    height: 1px;
+}
+
+#editing, #highlighting {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+    white-space: pre;
+}
+
+#editing {
+    /* overlay */
+    color: transparent;
+    background: transparent;
+    caret-color: white;
+    z-index: 1;
+
+    /* sizing */
+    margin-top: .5em;
+    padding: 1em 0 1em 60.8px;
+    outline: none;
+    resize: none;
+}
+
+#highlighting {                    
+    z-index: 0;    
+}
