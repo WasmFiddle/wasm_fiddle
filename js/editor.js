@@ -34,15 +34,19 @@ function syncEditor(){
     const textArea = document.getElementById("editing");
     textArea.addEventListener('keydown', (event) => {
         checkTab(textArea, event);
+        autoIndent(textArea, event);
     });
     textArea.addEventListener('scroll', () => {
         syncScroll(textArea);
         updateMargin(textArea);
     });
-    textArea.addEventListener('input', () => {
+    textArea.addEventListener('input', (event) => {
         update(textArea.value);
         syncScroll(textArea);
     });
+    textArea.addEventListener('keyup', (event)=>{
+        bracketQuote(textArea, event);
+    })
 }
 
 function existingContent(){
@@ -55,6 +59,57 @@ function update(text){
     if(text[text.length-1] == "\n" || text.length == 0) text += " "; // add placeholder space
     resultElement.innerHTML = text.replace(new RegExp("&", "g"), "&").replace(new RegExp("<", "g"), "<"); /* Global RegExp */
     Prism.highlightElement(resultElement);
+}
+
+function closeBracketQuote(element, event){
+    let closing;
+    let code = element.value;
+    let newChar = event.key;
+    if ('([{"\''.includes(newChar))
+    {
+        let before = code.slice(0, element.selectionStart); // text before tab
+        let after = code.slice(element.selectionEnd, element.value.length); // text after tab
+        let cursorPos = element.selectionEnd; // move to next place
+
+        switch (newChar){
+            case '(':
+                closing = ')';
+                break;
+            case '[':
+                closing = ']';
+                break;
+            case '{':
+                closing = '}';
+                break;
+            case '"':
+                closing = '"';
+                break;
+            case "'":
+                closing = "'";
+                break;
+        }
+
+        element.value = before+closing+after;
+        element.selectionStart = cursorPos;
+        element.selectionEnd = cursorPos;
+    }
+}
+
+function bracketQuote(element, event){
+    let next = element.value[element.selectionStart];
+    let code = element.value;
+    let newChar = event.key
+    if (')]}\'"'.includes(newChar) && next == newChar){
+        let before = code.slice(0, element.selectionStart); // text before insert
+        let after = code.slice(element.selectionEnd + 1); // text after
+        let cursorPos = element.selectionEnd; // move to next place
+        element.value = before+after;
+    } else {
+        closeBracketQuote(element, event);
+
+    }
+
+    update(element.value);
 }
 
 function syncScroll(element){
@@ -82,8 +137,29 @@ function checkTab(element, event) {
         let cursorPos = element.selectionEnd + 4; // where cursor moves after tab - 4 for 4 spaces
         element.value = beforeTab + "    " + afterTab; // add tab char - 4 spaces
         // move cursor
-        element.selectionStart = cursorPos;
         element.selectionEnd = cursorPos;
         update(element.value); // Update text to include indent
+    }
+}
+
+function autoIndent(element, event){
+    if (event.key == 'Enter') {
+        event.preventDefault();
+        let code = element.value;
+        let cursorPos = element.selectionStart; 
+        let lineText = code.slice(0, element.selectionStart);
+        lineText = lineText.slice(lineText.lastIndexOf('\n')+1, element.selectionStart);
+        let spaces = 0;
+        lineText.split('').forEach(el=>{
+            if (el == ' ') spaces++
+            else return;
+        })
+        
+        let before = code.slice(0, element.selectionStart); 
+        let after = code.slice(element.selectionEnd);
+        element.value = before + '\n' + (' '.repeat(spaces)) + after;
+        element.selectionEnd = cursorPos + spaces + 1;
+        element.selectionStart = cursorPos + spaces + 1;
+        update(element.value);
     }
 }
