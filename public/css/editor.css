@@ -6,14 +6,6 @@
 .user-input{
     margin: 2vh 2.5vw;
 }
-<<<<<<< HEAD
-=======
-.code-editor {
-    position: relative;
-    width: 45vw;
-    height: 50vh;
-}
->>>>>>> 223288b34cfc3a62199d018e3d2d44dfa388db9d
 
 .code-editor > * {
     font-size: 1em;
