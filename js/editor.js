@@ -61,6 +61,11 @@ function update(text){
     Prism.highlightElement(resultElement);
 }
 
+function cursorPlacement(element, placement){
+    element.selectionEnd = placement;
+    element.selectionStart = placement;
+}
+
 function closeBracketQuote(element, event){
     let closing;
     let code = element.value;
@@ -90,8 +95,7 @@ function closeBracketQuote(element, event){
         }
 
         element.value = before+closing+after;
-        element.selectionStart = cursorPos;
-        element.selectionEnd = cursorPos;
+        cursorPlacement(element, cursorPos);
     }
 }
 
@@ -104,6 +108,7 @@ function bracketQuote(element, event){
         let after = code.slice(element.selectionEnd + 1); // text after
         let cursorPos = element.selectionEnd; // move to next place
         element.value = before+after;
+        cursorPlacement(element, cursorPos);
     } else {
         closeBracketQuote(element, event);
 
@@ -137,7 +142,7 @@ function checkTab(element, event) {
         let cursorPos = element.selectionEnd + 4; // where cursor moves after tab - 4 for 4 spaces
         element.value = beforeTab + "    " + afterTab; // add tab char - 4 spaces
         // move cursor
-        element.selectionEnd = cursorPos;
+        cursorPlacement(element, cursorPos);
         update(element.value); // Update text to include indent
     }
 }
@@ -158,8 +163,7 @@ function autoIndent(element, event){
         let before = code.slice(0, element.selectionStart); 
         let after = code.slice(element.selectionEnd);
         element.value = before + '\n' + (' '.repeat(spaces)) + after;
-        element.selectionEnd = cursorPos + spaces + 1;
-        element.selectionStart = cursorPos + spaces + 1;
+        cursorPlacement(element, cursorPos + spaces + 1);
         update(element.value);
     }
 }
