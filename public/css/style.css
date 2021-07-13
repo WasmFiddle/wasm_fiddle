@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.5;
+}
+
+body {
+    background-image: linear-gradient(#ffffff99,#ffffff99),url("../img/violin-méline-waxx.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+}
+
+p {margin: 0;}
+
+.row{ align-items: center; }
+
+.row > * { padding: 0; }
+
+.bg-light {
+    background-color: #f8f9f899 !important;
+}
+
+.navbar {
+    padding: 0;
+}
+
+.navbar > .container-fluid {
+    justify-content: normal;
+}
+
+.navbar-brand img{
+    margin: 0 1rem;
+    width:70px;
+    height:70px;
+}
+
+.container {
+    max-width: 100vw;
+    padding: 0 2%;
+}
+
+.container-fluid h4{
+    margin: 2%;
+    font-weight: bolder;
+    font-size: 40px;
+}
+
+#code-output{
+    align-items: stretch;
+}
+
+#code-output .text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.code-editor {
+    position: relative;
+    height: 70vh;
+}
+
+#output pre{
+    padding: 2%;
+    margin: 0;
+    height: 100%;
+    text-align: left;
+    white-space: pre-line;
+    background: white;
+    border-radius: .3em;
+}
+
+#embed{
+    width: 100%;
+}
+
+#btn-embed {
+    color: #333;
+    margin: 1% 0 1% 60%;
+    outline: none;
+    text-align: center;
+    font-weight: 400;
+    border: none;
+    border-radius: .25rem;
+    padding: .375rem .75rem;
+    background-color: #00ffff80;
+    transition: .2s background-color, .2s color ;
+}
+
+#btn-embed:hover{
+    background-color: #00ffff;
+}

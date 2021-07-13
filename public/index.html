@@ -15,6 +15,10 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="css/editor.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/prism.css" type="text/css">
+  
 
     <title>WASM Fiddle</title>
   </head>
@@ -24,17 +28,15 @@
         <a class="navbar-brand" href="#">
           <!-- Will need to update this with the logo that Daniel made -->
           <img
-            src="/docs/5.0/assets/brand/bootstrap-logo.svg"
+            src="img/logo.svg"
             alt=""
-            width="30"
-            height="24"
             class="d-inline-block align-text-top"
           />
-          WASM Fiddle
         </a>
+        <h4>WASM Fiddle</h4>
       </div>
     </nav>
-    <div class="container pt-5 pb-2">
+    <div class="container pt-2 pb-2">
       <div class="row">
         <div class="col-5">
           <input
@@ -44,6 +46,7 @@
             id="option1"
             autocomplete="off"
             checked
+            value="c"
           />
           <label class="btn btn-secondary" for="option1">C</label>
 
@@ -53,6 +56,7 @@
             name="options"
             id="option2"
             autocomplete="off"
+            value="cpp"
           />
           <label class="btn btn-secondary" for="option2">C++</label>
 
@@ -62,6 +66,7 @@
             name="options"
             id="option4"
             autocomplete="off"
+            value="rust"
           />
           <label class="btn btn-secondary" for="option4">Rust</label>
         </div>
@@ -72,27 +77,21 @@
       </div>
     </div>
     <div class="container">
-      <div class="row">
-        <div class="col-5">
-          <div class="form-group">
-            <textarea class="form-control" rows="10" id="comment"></textarea>
-          </div>
+      <div class="row" id="code-output">
+        <div class="col-5 code-editor line-numbers">
+          <textarea id="editing" spellcheck="false"></textarea>
+          <pre id="highlighting" aria-hidden="true"><code class="language-clike" id="highlighting-content"></code></pre>
         </div>
-        <div class="col-2 pt-5 text-center">
+        <div class="col-2 pt-2 text-center">
           <button type="button" class="btn btn-lg btn-success">Go!</button>
         </div>
-        <div class="col-5 bg-light">
-          <samp
-            >This text is meant to be treated as sample output from a computer
-            program.</samp
-          >
+        <div class="col-5" id="output">
+          <pre>This text is meant to be treated as sample output from a computer program.</pre>
         </div>
       </div>
       <div class="row">
-        <div class="col-5"></div>
-        <div class="col-2"></div>
-        <div class="col-5 pt-3">
-          <button type="button" class="btn btn-info">Embed</button>
+        <div class="col-5 pt-0" id="embed">
+          <button type="button" class="btn btn-info" id="btn-embed">Embed</button>
         </div>
       </div>
     </div>
@@ -114,5 +113,8 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script src="js/prism.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
