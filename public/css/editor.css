@@ -3,6 +3,11 @@
     margin: 0;
 }
 
+/* Darker line numbers */
+#highlighting .line-numbers-rows span::before{
+    color: #333;
+}
+
 .user-input{
     margin: 2vh 2.5vw;
 }

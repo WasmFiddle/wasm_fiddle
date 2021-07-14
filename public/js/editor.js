@@ -152,13 +152,16 @@ function autoIndent(element, event){
         event.preventDefault();
         let code = element.value;
         let cursorPos = element.selectionStart; 
+
+        // figure out how many spaces start the line
         let lineText = code.slice(0, element.selectionStart);
-        lineText = lineText.slice(lineText.lastIndexOf('\n')+1, element.selectionStart);
+        lineText = lineText.slice(lineText.lastIndexOf('\n')+1, element.selectionStart).split('');
+        // count the spaces
         let spaces = 0;
-        lineText.split('').forEach(el=>{
-            if (el == ' ') spaces++
-            else return;
-        })
+        for(let i=0; i<lineText.length; i++){
+            if(lineText[i] === ' ') spaces++; 
+            else break;
+        }
         
         let before = code.slice(0, element.selectionStart); 
         let after = code.slice(element.selectionEnd);
