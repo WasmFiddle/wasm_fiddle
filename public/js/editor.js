@@ -14,17 +14,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function langSelector(){
-    let menu = document.getElementById("selected-lang");
-    menu.addEventListener('change', updateLang);
+    document.getElementsByName("options").forEach(element => {
+        element.addEventListener('click', ()=>{updateLang(element.value)})
+    });
 }
 
-function updateLang(){
-    let selection = document.getElementById("selected-lang");
+function updateLang(selectedLang){
     let preBlock = document.getElementById("highlighting");
     let codeBlock = document.getElementById("highlighting-content");
 
-    let lang = selection.value == 'rust' ? 'rust' : 'clike';
-
+    let lang = selectedLang == 'rust' ? 'rust' : 'clike';
     preBlock.className = `language-${lang}`;
     codeBlock.className = `language-${lang}`;
     existingContent();
@@ -152,13 +151,16 @@ function autoIndent(element, event){
         event.preventDefault();
         let code = element.value;
         let cursorPos = element.selectionStart; 
+
+        // figure out how many spaces start the line
         let lineText = code.slice(0, element.selectionStart);
-        lineText = lineText.slice(lineText.lastIndexOf('\n')+1, element.selectionStart);
+        lineText = lineText.slice(lineText.lastIndexOf('\n')+1, element.selectionStart).split('');
+        // count the spaces
         let spaces = 0;
-        lineText.split('').forEach(el=>{
-            if (el == ' ') spaces++
-            else return;
-        })
+        for(let i=0; i<lineText.length; i++){
+            if(lineText[i] === ' ') spaces++; 
+            else break;
+        }
         
         let before = code.slice(0, element.selectionStart); 
         let after = code.slice(element.selectionEnd);
