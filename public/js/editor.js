@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     langSelector();
     syncEditor();
     updateLang();
-    goButton();
 });
 
 function langSelector(){
@@ -169,30 +168,4 @@ function autoIndent(element, event){
         cursorPlacement(element, cursorPos + spaces + 1);
         update(element.value);
     }
-}
-
-function goButton(){
-    let goBtn = document.getElementById("go-btn");
-    goBtn.addEventListener('click', ()=>{
-        serveFile();
-    });
-}
-
-function serveFile(){
-    const sourceFile = document.getElementById("editing").value;
-    let fileType;
-    document.getElementsByName("options").forEach(element => {
-        if (element.checked) 
-            fileType = element.value == 'rust' ? 'rs' : 'cpp';
-    });
-
-    let download = document.createElement('a');
-    download.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sourceFile));
-    download.setAttribute('download',  `main.${fileType}`);
-
-    download.style.display = 'none';
-    document.body.appendChild(download);
-
-    download.click();
-    document.body.removeChild(download);
 }
