@@ -1,8 +1,9 @@
-<div>
-    <h3>Welcome!</h3>
-	<form action="/compile">
-	  <label for="code">C++ code:</label>
-	  <input type="text" id="input_code" name="input_code" rows="4" cols="50"><br><br>
-	  <input type="submit" value="Compile">
-	</form>
-</div>
+<html>
+   <body>
+      <form action = "/compile" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+   </body>
+</html>
