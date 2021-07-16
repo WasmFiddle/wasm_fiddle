@@ -183,7 +183,7 @@ function serveFile(){
     let fileType;
     document.getElementsByName("options").forEach(element => {
         if (element.checked) 
-            fileType = element.value == 'rust' ? 'rust' : 'cpp';
+            fileType = element.value == 'rust' ? 'rs' : 'cpp';
     });
 
     let download = document.createElement('a');
