@@ -55,7 +55,9 @@ function sendFile() {
   console.log(sourceFile);
 ;
   var fileData = new FormData();
-  fileData.append(`${fileType}`, sourceFile);
+  fileData.append('file', sourceFile);
+  fileData.append('filetype', `${fileType}`);
+  
 
   //This will need to be modified for production
   fetch('http://localhost:8080/data', {
