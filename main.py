@@ -1,11 +1,11 @@
 from flask import Flask, request, send_from_directory, render_template
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 @app.route('/')
 def index():
-	return render_template('home.html')
+	return render_template('index.html')
 
 @app.route('/compile', methods=['GET', 'POST'])
 def compile():
@@ -14,7 +14,7 @@ def compile():
 	#f.write('include <iostream> \n int main() {\nstd::cout << "Hello World!" << std::endl;\nreturn 0;\n}\nEOF'
 	
 	# Get form data code
-	if request.method == 'POST':
+	if request.method == 'POST':	
 		f = request.files['file']
 		f.save(f.filename)
 		
