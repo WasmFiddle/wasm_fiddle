@@ -1,18 +1,7 @@
 window.addEventListener('DOMContentLoaded', ()=>{
-    //embedButton();
     goButton();
     copyCodeButton();
 })
-
-/* function embedButton(){
-    document.getElementById('btn-embed').addEventListener('click', ()=>{
-        embedFiddle();
-    })
-}
-
-function embedFiddle(){
-    alert('Embed some stuff!')
-} */
 
 function copyCodeButton(){
     document.getElementById('copyBtn').addEventListener('click', ()=>{
@@ -21,6 +10,7 @@ function copyCodeButton(){
 } 
 
 function copyLink() {
+    // Code adapted from https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
     var range = document.createRange();
     range.selectNode(document.getElementById("code-link"));
     window.getSelection().removeAllRanges(); // clear current selection
