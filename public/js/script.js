@@ -1,9 +1,10 @@
 window.addEventListener('DOMContentLoaded', ()=>{
-    embedButton();
+    //embedButton();
     goButton();
+    copyCodeButton();
 })
 
-function embedButton(){
+/* function embedButton(){
     document.getElementById('btn-embed').addEventListener('click', ()=>{
         embedFiddle();
     })
@@ -11,7 +12,23 @@ function embedButton(){
 
 function embedFiddle(){
     alert('Embed some stuff!')
-}
+} */
+
+function copyCodeButton(){
+    document.getElementById('copyBtn').addEventListener('click', ()=>{
+        copyLink();
+    })
+} 
+
+function copyLink() {
+    var range = document.createRange();
+    range.selectNode(document.getElementById("code-link"));
+    window.getSelection().removeAllRanges(); // clear current selection
+    window.getSelection().addRange(range); // to select text
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();// to deselect
+    alert("Code Copied");
+  }
 
 function goButton(){
     let goBtn = document.getElementById("go-btn");
