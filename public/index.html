@@ -23,10 +23,9 @@
     <title>WASM Fiddle</title>
   </head>
   <body>
-    <nav class="navbar navbar-primary">
+    <nav class="navbar navbar-primary d-none d-sm-block">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <!-- Will need to update this with the logo that Daniel made -->
           <img
             src="img/logo.svg"
             alt=""
@@ -39,16 +38,6 @@
     <div class="container pt-2 pb-2">
       <div class="row">
         <div class="col-5">
-          <!-- <input
-            type="radio"
-            class="btn-check mx-2"
-            name="options"
-            id="option1"
-            autocomplete="off"
-            checked
-            value="c"
-          />
-          <label class="btn btn-secondary" for="option1">C</label> -->
 
           <input
             type="radio"
@@ -59,7 +48,7 @@
             checked
             value="cpp"
           />
-          <label class="btn btn-secondary" for="option2">C / C++</label>
+          <label class="btn btn-secondary" for="option1">C / C++</label>
 
           <input
             type="radio"
@@ -69,29 +58,32 @@
             autocomplete="off"
             value="rust"
           />
-          <label class="btn btn-secondary" for="option4">Rust</label>
+          <label class="btn btn-secondary" for="option2">Rust</label>
         </div>
-        <div class="col-2"></div>
-        <div class="col-5">
+        <div class="col-2 d-none d-sm-block"></div>
+        <div class="d-none d-sm-block col-5">
           <p class="fs-3">Output</p>
         </div>
+        <div class="d-block d-sm-none col-6">
+            <p class="fs-3">WASM Fiddle</p>
+          </div>
       </div>
     </div>
     <div class="container">
       <div class="row" id="code-output">
-        <div class="col-5 code-editor line-numbers">
+        <div class="col-sm-5 code-editor line-numbers">
           <textarea id="editing" spellcheck="false"></textarea>
           <pre id="highlighting" aria-hidden="true"><code class="language-clike" id="highlighting-content"></code></pre>
         </div>
-        <div class="col-2 pt-2 text-center">
+        <div class="col-sm-2 pt-2 text-center">
           <button type="button" class="btn btn-lg btn-success" id="go-btn">Go!</button>
         </div>
-        <div class="col-5">
+        <div class="col-sm-5">
           <pre id="output">This text is meant to be treated as sample output from a computer program.</pre>
         </div>
       </div>
       <div class="row">
-        <div class="col-5 pt-0" id="embed">
+        <div class="d-none d-sm-block col-sm-5 pt-0" id="embed">
           <button type="button" class="btn btn-info" id="btn-embed">Embed</button>
         </div>
       </div>
