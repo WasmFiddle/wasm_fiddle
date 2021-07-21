@@ -56,7 +56,7 @@ function existingContent(){
 function update(text){
     let resultElement = document.getElementById("highlighting-content");
     if(text[text.length-1] == "\n" || text.length == 0) text += " "; // add placeholder space
-    resultElement.innerHTML = text.replace(new RegExp("&", "g"), "&").replace(new RegExp("<", "g"), "<"); /* Global RegExp */
+    resultElement.innerHTML = text.replace(new RegExp("&", "g"), "&").replace(new RegExp("<", "g"), "&lt"); /* Global RegExp */
     Prism.highlightElement(resultElement);
 }
 
