@@ -53,15 +53,19 @@ function sendFile() {
   });
 
   console.log(sourceFile);
-;
+
   var fileData = new FormData();
   fileData.append('file', sourceFile);
   fileData.append('filetype', `${fileType}`);
   
 
-  //This will need to be modified for production
-  fetch('/compile', {
-    method: 'POST',
-    body: fileData
-  });
+	//This will need to be modified for production
+	fetch('/compile', {
+		method: 'POST',
+		body: fileData
+	}).then(res=>{
+		return res.blob();
+	}).then(blob=>{
+		console.log(blob)
+	}).catch(err=>console.log(err));
 }
