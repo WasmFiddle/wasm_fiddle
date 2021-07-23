@@ -51,7 +51,7 @@ def build_compile_script(filename):
 	if filename.split('.')[1] == 'cpp': 
 		print(True)
 		s_flags = ''
-		s_flags += ' -s EXPORTED_FUNCTIONS=[_main]'
+		s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
 		s_flags += ' -s STANDALONE_WASM '
 		rename = ' -o output.wasm '
 	
