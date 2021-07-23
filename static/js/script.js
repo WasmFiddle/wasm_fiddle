@@ -51,7 +51,7 @@ function packageSource(){
   var sourceFile = new File([sourceText], `main.${fileType}`, {
     type: 'text/plain',
   });
-  console.log(sourceFile);
+  // console.log(sourceFile);
 
   var fileData = new FormData();
   fileData.append('file', sourceFile);
@@ -98,9 +98,14 @@ async function runWasm(wasmFile){
     .then(module => WebAssembly.instantiate(module, importObject))
     .then(wasmInstance => {
       console.log(wasmInstance.exports);
-      const aBuffer = wasmMemory.buffer;
-      const newBuffer = new Uint8Array(aBuffer);
-      console.log(newBuffer)
-      console.log(wasmInstance.exports.main());
+      // const aBuffer = wasmMemory.buffer;
+      // const newBuffer = new Uint8Array(aBuffer);
+      // console.log(newBuffer)
+      writeOutput(wasmInstance.exports.main());
     })
+}
+
+function writeOutput(toWrite){
+  const outBox = document.getElementById("output");
+  outBox.innerText = toWrite;
 }

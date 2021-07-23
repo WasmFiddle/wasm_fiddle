@@ -74,6 +74,9 @@ a {
     height: 100%;
     text-align: left;
     white-space: pre-line;
+    font-size: 1em;
+    line-height: 1.5;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 
 #embed{
