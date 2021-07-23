@@ -18,7 +18,9 @@ def compile():
 		app.config["CLIENT_WASM"] = '/usr/src/app/'
 
 		# Compile the C++/C file to WebAssembly
-		os.system('emcc {} -s STANDALONE_WASM -o output.wasm'.format(f.filename))
+		# os.system('emcc {} EXPORTED_FUNCTIONS=\'["_main"]\' -s EXTRA_EXPORTED_RUNTIME_METHODS=\'["cwrap"]\'-s STANDALONE_WASM -o output.wasm'.format(f.filename))
+		os.system('emcc {} -s EXPORTED_FUNCTIONS=\'["_main"]\' -s STANDALONE_WASM -o output.wasm'.format(f.filename))
+		# os.system('emcc {} -s STANDALONE_WASM -o output.wasm'.format(f.filename))
 		
 		# Send the WASM file to the client
 		try:

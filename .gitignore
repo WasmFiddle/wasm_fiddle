@@ -3,9 +3,5 @@ node_modules
 package-lock.json
 *.log
 
-# ignore test files
-main.cpp
-output.wasm
-
 # Git ignore for python
 env/*

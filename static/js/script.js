@@ -76,18 +76,31 @@ function sendRunSource() {
 }
 
 async function runWasm(wasmFile){
-  const importObject = {
-    'wasi_snapshot_preview1': {
+  // needed to instantiate sent file
+  let wasmMemory = new WebAssembly.Memory({initial: 2});
+  let importObject = {
+    wasi_snapshot_preview1: {
       'args_sizes_get': ()=>{},
       'args_get': ()=>{},
       'proc_exit': ()=>{},
       'fd_write': ()=>{}
     }, 
-    'env': {
-      'main': ()=>{},
+    env: { 
+      'main': ()=>{}, 
+    }, 
+    imports: {
+      memory: wasmMemory
     }
   }
+
   let buffer = await wasmFile.arrayBuffer(); 
-  let instance = await WebAssembly.instantiate(buffer, importObject);
-  console.log(instance);
+  WebAssembly.compile(buffer)
+    .then(module => WebAssembly.instantiate(module, importObject))
+    .then(wasmInstance => {
+      console.log(wasmInstance.exports);
+      const aBuffer = wasmMemory.buffer;
+      const newBuffer = new Uint8Array(aBuffer);
+      console.log(newBuffer)
+      console.log(wasmInstance.exports.main());
+    })
 }
