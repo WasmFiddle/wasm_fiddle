@@ -27,7 +27,12 @@ def compile():
 		# print(command)
 
 		# compile to WASM
-		compile_log = sp.run(command, capture_output=True, text=True)
+		if os.name == "nt":	# If machine is run on Windows 10
+			compile_log = sp.run(command, capture_output=True, text=True, shell=True)
+			#if not compile_log.stdout:
+				#sp.run(command, shell=True)
+		else:
+			compile_log = sp.run(command, capture_output=True, text=True)
 
 		# send stdout & stderr to text file
 		with open('output.txt', 'a') as outfile:
@@ -39,7 +44,6 @@ def compile():
 
 		# Send the WASM file to the client
 		try:
-			print(app.root_path) 
 			return send_from_directory(app.root_path, filename='output.wasm', as_attachment=True)
 		except FileNotFoundError:
 			return "File not found!"

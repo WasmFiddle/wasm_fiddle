@@ -1,0 +1,31 @@
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+main.cpp:2:8: error: use of undeclared identifier 'test'
+return test;
+       ^
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat -Wall main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_rr94k8rh\main_0.o' failed (returned 1)
+main.cpp:2:8: error: use of undeclared identifier 'test'
+return test;
+       ^
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat -Wall main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_ycpo1cdg\main_0.o' failed (returned 1)
+main.cpp:3:8: warning: unused variable 'y' [-Wunused-variable]
+   int y = x;   // no C4700 here
+       ^
+main.cpp:3:12: warning: variable 'x' is uninitialized when used here [-Wuninitialized]
+   int y = x;   // no C4700 here
+           ^
+main.cpp:2:9: note: initialize the variable 'x' to silence this warning
+   int x;
+        ^
+         = 0
+2 warnings generated.
