@@ -1,5 +1,7 @@
 # Git ignore for python
 env/*
+env
 
 # Git ignore for emscripten
 emsdk/*
+emsdk
