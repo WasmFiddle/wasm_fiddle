@@ -20,22 +20,27 @@ def compile():
 		# Define the location of the output file
 		app.config["CLIENT_WASM"] = '/usr/src/app/'
 
-		# ensure a past file isn't served 
+		# ensure a past files aren't served 
 		os.system('if [ -e output.wasm ]\nthen\nrm output.wasm\nfi')
+		os.system('if [ -e output.txt ]\nthen\nrm output.txt\nfi')
 
 		# Compile the C++/C file to WebAssembly
 		command = build_compile_script(f.filename).split()
 		# print(command)
 
-		# get debug information 
-		os.system('set EMCC_DEBUG=1');
+		# compile to WASM
+		compile_log = sp.run(command, capture_output=True, text=True)
 
-		# send output to text file
-		# with open('output.txt', 'w') as outfile, contextlib.redirect_stdout(outfile):
-		sp.check_output(command)
-		# proc = sp.Popen(command, stdout=sp.PIPE)
-		# output = proc.communicate()[0]
-		# print(output)
+		# send stdout & stderr to text file
+		with open('output.txt', 'a') as outfile:
+			if compile_log.stdout:
+				outfile.write(compile_log.stdout)
+
+			if compile_log.stderr:
+				outfile.write(compile_log.stderr)
+
+
+		# original call
 		# os.system('emcc {} -s STANDALONE_WASM -o output.wasm'.format(f.filename))
 		
 		# Send the WASM file to the client
@@ -47,19 +52,20 @@ def compile():
 
 
 def build_compile_script(filename):
+	rename, verbose, s_flags = '', '', ''
 	# if it's a C/C++ file
 	if filename.split('.')[1] == 'cpp': 
 		print(True)
-		s_flags = ''
 		s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
 		s_flags += ' -s STANDALONE_WASM '
-		rename = ' -o output.wasm '
+		rename += ' -o output.wasm '
+		verbose += ' -v '
 	
 	# otherwise compile as Rust
 	else:
 		pass
 
-	return f'emcc {filename} {s_flags} {rename}'
+	return f'emcc {filename} {s_flags} {rename} {verbose} -Wall'
 
 
 @app.route('/favicon.ico')
