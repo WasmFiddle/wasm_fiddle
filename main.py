@@ -1,8 +1,6 @@
 from flask import Flask, request, send_from_directory, render_template
-import contextlib
 import subprocess as sp
 import os
-import sys
 
 app = Flask(__name__, static_folder="static")
 
@@ -39,10 +37,6 @@ def compile():
 			if compile_log.stderr:
 				outfile.write(compile_log.stderr)
 
-
-		# original call
-		# os.system('emcc {} -s STANDALONE_WASM -o output.wasm'.format(f.filename))
-		
 		# Send the WASM file to the client
 		try:
 			print(app.root_path) 
@@ -52,20 +46,27 @@ def compile():
 
 
 def build_compile_script(filename):
-	rename, verbose, s_flags = '', '', ''
 	# if it's a C/C++ file
 	if filename.split('.')[1] == 'cpp': 
-		print(True)
-		s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
-		s_flags += ' -s STANDALONE_WASM '
-		rename += ' -o output.wasm '
-		verbose += ' -v '
-	
+		return c_cpp_compile(filename)
+
 	# otherwise compile as Rust
 	else:
-		pass
+		return rust_compile(filename)
 
+
+def c_cpp_compile(filename):
+	rename, verbose, s_flags = '', '', ''
+	s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
+	s_flags += ' -s STANDALONE_WASM '
+	rename += ' -o output.wasm '
+	# verbose += ' -v '
+	
 	return f'emcc {filename} {s_flags} {rename} {verbose} -Wall'
+
+
+def rust_compile(filename):
+	pass
 
 
 @app.route('/favicon.ico')
