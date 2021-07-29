@@ -1,6 +1,7 @@
 from flask import Flask, request, send_from_directory, render_template
 import subprocess as sp
 import os
+from datetime import datetime
 
 app = Flask(__name__, static_folder="static")
 
@@ -22,15 +23,18 @@ def compile():
 		os.system('if [ -e output.wasm ]\nthen\nrm output.wasm\nfi')
 		os.system('if [ -e output.txt ]\nthen\nrm output.txt\nfi')
 
+		# Create directory
+		now = datetime.now()
+		current_time = now.strftime("%H%M%S")
+		os.mkdir(current_time)
+		
 		# Compile the C++/C file to WebAssembly
-		command = build_compile_script(f.filename).split()
+		command = build_compile_script(f.filename, current_time).split()
 		# print(command)
 
 		# compile to WASM
 		if os.name == "nt":	# If machine is run on Windows 10
 			compile_log = sp.run(command, capture_output=True, text=True, shell=True)
-			#if not compile_log.stdout:
-				#sp.run(command, shell=True)
 		else:
 			compile_log = sp.run(command, capture_output=True, text=True)
 
@@ -44,33 +48,46 @@ def compile():
 
 		# Send the WASM file to the client
 		try:
-			return send_from_directory(app.root_path, filename='output.wasm', as_attachment=True)
+			return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
 		except FileNotFoundError:
 			return "File not found!"
 
 
-def build_compile_script(filename):
+def build_compile_script(filename, directory):
 	# if it's a C/C++ file
 	if filename.split('.')[1] == 'cpp': 
-		return c_cpp_compile(filename)
+		return c_cpp_compile(filename, directory)
 
 	# otherwise compile as Rust
 	else:
 		return rust_compile(filename)
 
 
-def c_cpp_compile(filename):
-	rename, verbose, s_flags = '', '', ''
+def c_cpp_compile(filename, directory):
+	rename, verbose, s_flags, template = '', '', '', ''
+	s_flags += ' -s WASM=1 '
 	s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
-	s_flags += ' -s STANDALONE_WASM '
-	rename += ' -o output.wasm '
+	rename += f' -o {directory}\output.html '
+	template += ' --shell-file templates\emscripten_template.html'
 	# verbose += ' -v '
 	
-	return f'emcc {filename} {s_flags} {rename} {verbose} -Wall'
+	return f'emcc {filename} -O3 {s_flags} {rename} {verbose} {template} -Wall'
 
 
 def rust_compile(filename):
 	pass
+	
+@app.route('/output')
+def getHTML():
+	return render_template('output.html')
+		
+@app.route('/output.js')
+def getJS():
+	return send_from_directory(app.root_path, filename='output.js', as_attachment=False)
+	
+@app.route('/output.wasm')
+def getWASM():
+	return send_from_directory(app.root_path, filename='output.wasm', as_attachment=False)
 
 
 @app.route('/favicon.ico')

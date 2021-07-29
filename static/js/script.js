@@ -62,16 +62,30 @@ function packageSource(){
 
 function sendRunSource() {
   let fileData= packageSource()
-  
+	document.getElementById("output").innerHTML = 'Please wait while your code compiles...';
 	//This will need to be modified for production
 	fetch('/compile', {
 		method: 'POST',
 		body: fileData
 	}).then(res=>{
-		return res.blob();
-	}).then(blob=>{
-		console.log(blob)
-		runWasm(blob)
+		return res.text();
+	}).then((html) => {
+		document.getElementById("output").innerHTML = html;
+		let myScript = document.createElement("script");
+		myScript.setAttribute("src", "http://localhost:8000/output.js");
+		myScript.setAttribute("async", "false");
+
+		let head = document.head;
+		head.insertBefore(myScript, head.firstElementChild);
+	}).then(() => {		
+		setTimeout(function(){
+			var iframeOutput = document.createElement('iframe');
+			iframeOutput.setAttribute('id', 'iframeOutput');
+			var divOutput = document.getElementById('output');
+			divOutput.innerHTML = "";
+			divOutput.appendChild(iframeOutput);
+			iframeOutput.setAttribute('src', 'http://localhost:8000/output');
+		}, 5000);		
 	}).catch(err=>console.log(err));
 }
 
@@ -105,7 +119,13 @@ async function runWasm(wasmFile){
     })
 }
 
+async function writeHtml(htmlFile) {
+	let buffer = await htmlFile.arrayBuffer(); 
+	var enc = new TextDecoder("utf-8");
+	writeOutput(enc.decode(buffer));
+}
+
 function writeOutput(toWrite){
   const outBox = document.getElementById("output");
-  outBox.innerText = toWrite;
+  outBox.innerHTML = toWrite;
 }
