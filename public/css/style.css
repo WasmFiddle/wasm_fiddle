@@ -63,7 +63,7 @@ a {
 
 .code-editor {
     position: relative;
-    height: 70vh;
+    height: 60vh;
 }
 
 #go-btn{ width: 50%;}
@@ -103,4 +103,11 @@ a {
     text-align: right;
     margin: 1%;
     font-size:x-small;
+}
+
+@media (max-width: 567px) {
+    .code-editor {
+        position: relative;
+        height: 45vh;
+    }
 }
