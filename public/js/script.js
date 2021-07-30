@@ -1,3 +1,5 @@
+
+
 window.addEventListener('DOMContentLoaded', () => {
   embedButton();
   goButton();
@@ -21,7 +23,34 @@ function goButton() {
   });
 }
 
-function serveFile() {
+
+function sendRunSource() {
+    let fileData= packageSource();
+
+    var importObject = {
+        imports: { imported_func: arg => console.log(arg) }
+      };
+    
+      //This will need to be modified for production
+      fetch('/data', {
+          method: 'POST',
+          body: fileData
+      }).then((response) => {
+          return response.json();
+      }).then((data) =>{
+          //console.log(data);
+          WebAssembly.instantiateStreaming(fetch(`/file/${data.wrkdir}`), importObject).then(obj => {
+                // Do something with the results!
+              //console.log(obj.instance.exports);
+             console.log(obj.instance.exports.main())});
+
+      }).catch(err=>console.log(err));
+  }
+
+
+// IGNORE THIS SECTION IT WAS ALL TESTING
+
+/* function serveFile() {
   const sourceFile = document.getElementById('editing').value;
   let fileType;
   document.getElementsByName('options').forEach((element) => {
@@ -40,9 +69,9 @@ function serveFile() {
 
   download.click();
   document.body.removeChild(download);
-}
+} */
 
-function sendFile() {
+/* function sendFile() {
   const sourceText = document.getElementById('editing').value;
   let fileType;
   document.getElementsByName('options').forEach((element) => {
@@ -75,32 +104,20 @@ function sendFile() {
   fetch('http://localhost:8080/data', {
     method: 'POST',
     body: fileData
-  }).then(response =>
-    response.arrayBuffer()
-  ).then(bytes =>
-    WebAssembly.instantiate(bytes, importObject)
-  ).then(result =>{
-    console.log(result.instance.exports);
-    result.instance.exports.exported_func();
-  }).catch(err =>{console.log(err)});
-}
+  }).then(response => {
+    console.log(response);
+    WebAssembly.instantiateStreaming(fetch('file'), importObject)
+    .then(results => {
+        console.log("RES: " + results)
+  // Do something with the results!
+}).catch(err =>{console.log(err)});
+});
+} */
 
-function sendRunSource() {
-    let fileData= packageSource()
-    
-      //This will need to be modified for production
-      fetch('/data', {
-          method: 'POST',
-          body: fileData
-      }).then(res=>{
-          return res.blob();
-      }).then(blob=>{
-          console.log(blob)
-          runWasm(blob)
-      }).catch(err=>console.log(err));
-  }
+
+
   
-  async function runWasm(wasmFile){
+  /* async function runWasm(wasmFile){
     // needed to instantiate sent file
     let wasmMemory = new WebAssembly.Memory({initial: 2});
     let importObject = {
@@ -128,7 +145,7 @@ function sendRunSource() {
         // console.log(newBuffer)
         writeOutput(wasmInstance.exports.main());
       })
-  }
+  } */
 
   function packageSource(){
     const sourceText = document.getElementById('editing').value;
