@@ -72,21 +72,22 @@ function sendRunSource() {
 	}).then((html) => {
 		document.getElementById("output").innerHTML = html;
 		let myScript = document.createElement("script");
-		myScript.setAttribute("src", "http://localhost:8000/output.js");
+		myScript.setAttribute("src", "/output.js");
 		myScript.setAttribute("async", "false");
 
 		let head = document.head;
 		head.insertBefore(myScript, head.firstElementChild);
-	}).then(() => {		
-		setTimeout(function(){
-			var iframeOutput = document.createElement('iframe');
-			iframeOutput.setAttribute('id', 'iframeOutput');
-			var divOutput = document.getElementById('output');
-			divOutput.innerHTML = "";
-			divOutput.appendChild(iframeOutput);
-			iframeOutput.setAttribute('src', 'http://localhost:8000/output');
-		}, 5000);		
-	}).catch(err=>console.log(err));
+	})
+  // .then(() => {		
+	// 	setTimeout(function(){
+	// 		var iframeOutput = document.createElement('iframe');
+	// 		iframeOutput.setAttribute('id', 'iframeOutput');
+	// 		var divOutput = document.getElementById('output');
+	// 		divOutput.innerHTML = "";
+	// 		divOutput.appendChild(iframeOutput);
+	// 		iframeOutput.setAttribute('src', 'http://localhost:8000/output');
+	// 	}, 5000);		
+	.catch(err=>console.log(err));
 }
 
 async function runWasm(wasmFile){
@@ -102,9 +103,6 @@ async function runWasm(wasmFile){
     env: { 
       'main': ()=>{}, 
     }, 
-    imports: {
-      memory: wasmMemory
-    }
   }
 
   let buffer = await wasmFile.arrayBuffer(); 

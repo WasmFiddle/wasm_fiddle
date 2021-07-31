@@ -20,8 +20,11 @@ def compile():
 		app.config["CLIENT_WASM"] = '/usr/src/app/'
 
 		# ensure a past files aren't served 
-		os.system('if [ -e output.wasm ]\nthen\nrm output.wasm\nfi')
-		os.system('if [ -e output.txt ]\nthen\nrm output.txt\nfi')
+		for file_type in ['html', 'txt', 'js', 'wasm']:
+			if file_type == 'html':
+				os.system(f'echo > templates/output.{file_type}')
+			else:
+				os.system(f'echo > output.{file_type}')
 
 		# Create directory
 		now = datetime.now()
@@ -46,9 +49,16 @@ def compile():
 			if compile_log.stderr:
 				outfile.write(compile_log.stderr)
 
-		# Send the WASM file to the client
+		# Send the HTML file to the client
 		try:
-			return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
+			# move new files to root directory
+			sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
+			sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
+			if file_type == 'html':
+				os
+			# remove newly created folder after contents copied
+			sp.run(['rm', '-rf', f'{current_time}'])
+			return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)
 		except FileNotFoundError:
 			return "File not found!"
 
@@ -67,8 +77,9 @@ def c_cpp_compile(filename, directory):
 	rename, verbose, s_flags, template = '', '', '', ''
 	s_flags += ' -s WASM=1 '
 	s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
-	rename += f' -o {directory}\output.html '
-	template += ' --shell-file templates\emscripten_template.html'
+	rename += f' -o {directory}/output.html '
+	# rename += f' -o output.html '
+	template += ' --shell-file ./templates/emscripten_template.html'
 	# verbose += ' -v '
 	
 	return f'emcc {filename} -O3 {s_flags} {rename} {verbose} {template} -Wall'
