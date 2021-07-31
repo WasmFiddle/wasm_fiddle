@@ -15,7 +15,6 @@ const util = require('util');
 const path = require('path');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
-const wasmWorker = require('wasm-worker');
 
 app.use(
   fileUpload({
@@ -31,7 +30,7 @@ app.get('/', (req, res) => {
 //Route for uploading wasm file
 app.get('/file/:fID', (req,res) => {
     const { fID } = req.params;
-    
+    console.log("File Sent");
     res.sendFile(path.join(__dirname, `/tempData/${fID}/output.wasm`));
    
     //COMMENT THIS OUT IF YOU WANT TO KEEP THE FILE
@@ -67,9 +66,6 @@ async function makeCreateReply(req, res) {
       if (err) {
         return console.error(err);
       }
-
-      console.log('Directory created successfully!');
-      console.log(workingFolder);
     })
 
     .then(() => {
@@ -81,38 +77,43 @@ async function makeCreateReply(req, res) {
           
         })
         .then(() => {
-
+        
           const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -o output.js`;
 
           // Run the command line in the folder that was created
-          execSync(
-            cmdLine,
-            {
-              cwd: path.join(__dirname, `/tempData/${workingFolder}/`),
-            },
-            (error, stdout, stderr) => {
-              if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-              }
-              if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-              }
-              console.log(`stdout: ${stdout}`);
-            }
-          );
+            execSync(
+                cmdLine,
+                {
+                cwd: path.join(__dirname, `/tempData/${workingFolder}/`),
+                })
+            
         }).then(() => {
             
             res.status(200).json({ wrkdir: `${workingFolder}`});
         })
         .catch((e) => {
-          console.log(e);
+            let err = e.toString()
+            let errLines = err.split('\n')
+            errLines.splice(0,2)
+            let finalErr = errLines.join('\n');
+            err = finalErr.substring(0, finalErr.indexOf('emcc:'))
+            //console.log("\n\n\n\n" + err);
+
+            res.status(200).json({ error: `${err}`});
+
+            fsPromises.rmdir(path.join(__dirname, `/tempData/${workingFolder}`), {
+                recursive: true,
+              }, (error) => {
+                if (error) {
+                  console.log(error);
+                }
+                else {
+                  console.log(`Recursive: ${fID} Deleted!`);
+                }
+              });
         });
     })
-    .catch((e) => {
-      console.log(e);
-    });
+    .catch((e) => console.log(e));
 }
 
 // Listen to the App Engine-specified port, or 8080 otherwise

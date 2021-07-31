@@ -38,11 +38,15 @@ function sendRunSource() {
       }).then((response) => {
           return response.json();
       }).then((data) =>{
-          //console.log(data);
+          console.log(data);
+          if(data.error){
+            document.getElementById('output').innerHTML = data.error;
+          }
+          else {
           WebAssembly.instantiateStreaming(fetch(`/file/${data.wrkdir}`), importObject).then(obj => {
-                // Do something with the results!
-              //console.log(obj.instance.exports);
+            document.getElementById('output').innerHTML = obj.instance.exports.main();
              console.log(obj.instance.exports.main())});
+          }
 
       }).catch(err=>console.log(err));
   }
