@@ -31,11 +31,11 @@ def compile():
 		current_time = now.strftime("%H%M%S")
 		os.mkdir(current_time)
 		
-		# Compile the C++/C file to WebAssembly
+		# build the command to compile the source file to WebAssembly
 		command = build_compile_script(f.filename, current_time).split()
 		# print(command)
 
-		# compile to WASM
+		# compile to WebAssembly
 		if os.name == "nt":	# If machine is run on Windows 10
 			compile_log = sp.run(command, capture_output=True, text=True, shell=True)
 		else:
@@ -52,10 +52,9 @@ def compile():
 		# Send the HTML file to the client
 		try:
 			# move new files to root directory
+			# sp.run(['cp' ,f'./{current_time}/output.html', f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
 			sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
 			sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
-			if file_type == 'html':
-				os
 			# remove newly created folder after contents copied
 			sp.run(['rm', '-rf', f'{current_time}'])
 			return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)

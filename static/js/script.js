@@ -72,7 +72,7 @@ function sendRunSource() {
 	}).then((html) => {
 		document.getElementById("output").innerHTML = html;
 		let myScript = document.createElement("script");
-		myScript.setAttribute("src", "/output.js");
+		myScript.setAttribute("src", "../../output.js");
 		myScript.setAttribute("async", "false");
 
 		let head = document.head;
