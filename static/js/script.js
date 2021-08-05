@@ -69,7 +69,7 @@ function sendRunSource() {
 		body: fileData
 	}).then(res=>{
 		return res.text();
-	}).then((html) => {
+	})/*.then((html) => {
 		document.getElementById("output").innerHTML = html;
 		
 		
@@ -79,7 +79,7 @@ function sendRunSource() {
 
 		let head = document.head;
 		head.insertBefore(myScript, head.firstElementChild);
-	})/*.then(() => {		
+	}).then(() => {		
 		setTimeout(function(){
 			var iframeOutput = document.createElement('iframe');
 			iframeOutput.setAttribute('id', 'iframeOutput');
@@ -88,7 +88,12 @@ function sendRunSource() {
 			divOutput.appendChild(iframeOutput);
 			iframeOutput.setAttribute('src', 'http://localhost:8000/output');
 		}, 5000);		
-	})*/.catch(err=>console.log(err));
+	})*/
+	.then((js) => {
+		let myScript = document.getElementById("wasmScript");
+		myScript.innerHTML = js;
+	})
+	.catch(err=>console.log(err));
 }
 
 async function runWasm(wasmFile){
@@ -104,9 +109,6 @@ async function runWasm(wasmFile){
     env: { 
       'main': ()=>{}, 
     }, 
-    imports: {
-      memory: wasmMemory
-    }
   }
 
   let buffer = await wasmFile.arrayBuffer(); 
@@ -114,9 +116,6 @@ async function runWasm(wasmFile){
     .then(module => WebAssembly.instantiate(module, importObject))
     .then(wasmInstance => {
       console.log(wasmInstance.exports);
-      // const aBuffer = wasmMemory.buffer;
-      // const newBuffer = new Uint8Array(aBuffer);
-      // console.log(newBuffer)
       writeOutput(wasmInstance.exports.main());
     })
 }
