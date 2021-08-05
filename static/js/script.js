@@ -69,27 +69,7 @@ function sendRunSource() {
 		body: fileData
 	}).then(res=>{
 		return res.text();
-	})/*.then((html) => {
-		document.getElementById("output").innerHTML = html;
-		
-		
-		let myScript = document.createElement("script");
-		myScript.setAttribute("src", "/output.js");
-		myScript.setAttribute("async", "false");
-
-		let head = document.head;
-		head.insertBefore(myScript, head.firstElementChild);
-	}).then(() => {		
-		setTimeout(function(){
-			var iframeOutput = document.createElement('iframe');
-			iframeOutput.setAttribute('id', 'iframeOutput');
-			var divOutput = document.getElementById('output');
-			divOutput.innerHTML = "";
-			divOutput.appendChild(iframeOutput);
-			iframeOutput.setAttribute('src', 'http://localhost:8000/output');
-		}, 5000);		
-	})*/
-	.then((js) => {
+	}).then((js) => {
 		let myScript = document.getElementById("wasmScript");
 		myScript.innerHTML = js;
 	})

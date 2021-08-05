@@ -13,26 +13,27 @@ def index():
 def compile():
 	# Get input code file, return compiled .wasm file
 	if request.method == 'POST':	
-		f = request.files['file']
-		f.save(f.filename)
+		# Create directory
+		now = datetime.now()
+		current_time = now.strftime("%H%M%S")
+		os.mkdir(current_time)
 		
-		# Define the location of the output file
-		app.config["CLIENT_WASM"] = '/usr/src/app/'
+		# Save file in new directory
+		f = request.files['file']
+		file_path = os.path.join(app.root_path, current_time, f.filename)
+		print(file_path)
+		f.save(file_path)
 
-		# ensure a past files aren't served 
+		# ensure a past files aren't served
 		for file_type in ['html', 'txt', 'js', 'wasm']:
 			# if file_type == 'html':
 				# os.system(f'echo > templates/output.{file_type}')
 			# else:
 			os.system(f'echo > output.{file_type}')
 
-		# Create directory
-		now = datetime.now()
-		current_time = now.strftime("%H%M%S")
-		os.mkdir(current_time)
 		
 		# build the command to compile the source file to WebAssembly
-		command = build_compile_script(f.filename, current_time).split()
+		command = build_compile_script(os.path.join(current_time, f.filename), current_time).split()
 		# print(command)
 
 		# compile to WebAssembly
@@ -55,6 +56,7 @@ def compile():
 			sp.run(['cp' ,f'./{current_time}/output.html', f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
 			# sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
 			# sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
+
 			# remove newly created folder after contents copied
 			sp.run(['rm', '-rf', f'{current_time}'])
 			# return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)
