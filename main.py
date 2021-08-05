@@ -79,7 +79,7 @@ def rust_compile(filename):
 	
 @app.route('/output')
 def getHTML():
-	return render_template('output.html')
+	return send_from_directory(app.root_path, filename='output.js', as_attachment=False)
 		
 @app.route('/output.js')
 def getJS():
