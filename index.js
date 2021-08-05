@@ -27,32 +27,34 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+
 //Route for uploading wasm file
 app.get('/file/:fID', (req,res) => {
     const { fID } = req.params;
     console.log("File Sent");
-    res.sendFile(path.join(__dirname, `/tempData/${fID}/output.wasm`));
-   
-    //COMMENT THIS OUT IF YOU WANT TO KEEP THE FILE
+    res.sendFile(path.join(__dirname, `/tempData/${fID}/output.wasm`))
+        
+    //COMMENT THIS OUT IF YOU WANT TO KEEP THE FILE AFTER IT IS SENT TO FRONT END (FOR TESTING)
     // https://www.geeksforgeeks.org/node-js-fs-rmdir-method/
     fsPromises.rmdir(path.join(__dirname, `/tempData/${fID}`), {
         recursive: true,
-      }, (error) => {
+    }, (error) => {
         if (error) {
-          console.log(error);
+        console.log(error);
         }
-        else {
-          console.log(`Recursive: ${fID} Deleted!`);
-        }
-      });
+    });
+
 })
 
 
+//Route for original data from user
 app.post('/data', async (req, res) => {
      makeCreateReply(req, res);
 });
 
-async function makeCreateReply(req, res) {
+
+
+function makeCreateReply(req, res) {
 
   //Generates Random string for temp folder
   const workingFolder = uuidv4();
@@ -69,6 +71,7 @@ async function makeCreateReply(req, res) {
     })
 
     .then(() => {
+
       // Set file path to the new folder and then write the file
       const filePath = path.join(__dirname, `/tempData/${workingFolder}/`);
 
@@ -89,16 +92,21 @@ async function makeCreateReply(req, res) {
             
         }).then(() => {
             
+            // Responds with the working directory
             res.status(200).json({ wrkdir: `${workingFolder}`});
+
         })
         .catch((e) => {
+
+            // This strips the leading compile lines as well as the trailing emcc lines
+            // it also messes up the placement of the '^' pointing to the issue though 
             let err = e.toString()
             let errLines = err.split('\n')
             errLines.splice(0,2)
             let finalErr = errLines.join('\n');
             err = finalErr.substring(0, finalErr.indexOf('emcc:'))
-            //console.log("\n\n\n\n" + err);
 
+            // responds with the error message
             res.status(200).json({ error: `${err}`});
 
             fsPromises.rmdir(path.join(__dirname, `/tempData/${workingFolder}`), {
@@ -115,6 +123,8 @@ async function makeCreateReply(req, res) {
     })
     .catch((e) => console.log(e));
 }
+
+
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
