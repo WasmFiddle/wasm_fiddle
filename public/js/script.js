@@ -46,11 +46,14 @@ function sendRunSource() {
       }).then((data) =>{
           console.log(data);
           if(data.error){
+              // This might need to be .textContent, but I havne't had the time to check
             document.getElementById('output').innerHTML = data.error;
           }
           else {
               var wasmFileLoc = `/file/${data.wrkdir}`;
               allOfIt(wasmFileLoc);
+              document.getElementById('output').textContent = document.getElementById('woutput');
+              
           /* WebAssembly.instantiateStreaming(fetch(`/file/${data.wrkdir}`), importObject).then(obj => {
             document.getElementById('output').innerHTML = obj.instance.exports.main();
              console.log(obj.instance.exports.main())}); */
@@ -345,7 +348,26 @@ function allOfIt(wasmFileLoc){
 
     // Set up the out() and err() hooks, which are how we can print to stdout or
     // stderr, respectively.
-    var out = Module['print'] || console.log.bind(console);
+
+    //EDIT - Original was
+    // var out = Module['print'] || console.log.bind(console);
+    var out = Module['print'] || (function() {
+          var element = document.getElementById('woutput');
+          if (element) element.value = ''; // clear browser cache
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            // text = text.replace(/&/g, "&amp;");
+            // text = text.replace(/</g, "&lt;");
+            // text = text.replace(/>/g, "&gt;");
+            // text = text.replace('\n', '<br>', 'g');
+            console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })();
     var err = Module['printErr'] || console.warn.bind(console);
 
     // Merge back in the overrides
@@ -2431,4 +2453,6 @@ function allOfIt(wasmFileLoc){
     if (Module['noInitialRun']) shouldRunNow = false;
 
     run();
+
 }
+
