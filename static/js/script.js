@@ -1691,6 +1691,7 @@ function allOfIt(wasmFileLoc){
         && !isFileURI(wasmBinaryFile)
         ) {
         return fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function(response) {
+			console.log(response);
             if (!response['ok']) {
             throw "failed to load wasm binary file at '" + wasmBinaryFile + "'";
             }
@@ -1786,6 +1787,7 @@ function allOfIt(wasmFileLoc){
             !isFileURI(wasmBinaryFile) &&
             typeof fetch === 'function') {
         return fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function (response) {
+			console.log(response);
             var result = WebAssembly.instantiateStreaming(response, info);
             return result.then(receiveInstantiationResult, function(reason) {
                 // We expect the most common failure cause to be a bad MIME type for the binary,

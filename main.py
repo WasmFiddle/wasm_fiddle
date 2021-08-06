@@ -1,6 +1,7 @@
-from flask import Flask, request, send_from_directory, render_template, jsonify, after_this_request
+from flask import Flask, request, send_file, send_from_directory, render_template, jsonify
 import subprocess as sp
 import os
+import io
 from datetime import datetime
 
 app = Flask(__name__, static_folder="static")
@@ -15,7 +16,7 @@ def compile():
 	if request.method == 'POST':	
 		# Create directory
 		now = datetime.now()
-		current_time = now.strftime("%H%M%S")
+		current_time = 'temp_' + now.strftime("%H%M%S")
 		os.mkdir(current_time)
 		
 		# Save file in new directory
@@ -81,23 +82,34 @@ def build_compile_script(filename, directory):
 
 def c_cpp_compile(filename, directory):
 	rename, verbose, s_flags, template = '', '', '', ''
-	s_flags += ' -s WASM=1 '
-	# s_flags += ' -s EXPORTED_FUNCTIONS=[_main] '
-	rename += f' -o {directory}/output.html '
-	# rename += f' -o output.html '
-	template += ' --shell-file ./templates/emscripten_template.html'
-	# verbose += ' -v '
-	
-	return f'emcc {filename} -O3 {s_flags} {rename} {verbose} {template} -Wall'
+	s_flags += ' -s ENVIRONMENT=web '
+	s_flags += ' -s EXIT_RUNTIME=1 '
+	s_flags += ' -s FILESYSTEM=1 '
+	s_flags += ' -s EXPORTED_FUNCTIONS=["_main"] '
+	rename += f' -o {directory}/output.js '
+	#template += ' --shell-file ./templates/emscripten_template.html'
+	#const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -o output.js`;
+	return f'emcc {filename} {s_flags} {rename} {verbose} {template}'
+	#return 'emcc {} -s EXPORTED_FUNCTIONS=["_main"] -o {}/output.js'.format(filename, directory)
 
 
 def rust_compile(filename):
 	pass
 	
+# Send WASM to client upon request in JS
 @app.route('/file/<directory>', methods=['GET'])
 def getWASM(directory):	
-	print(directory)
-	return send_from_directory(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=True)
+
+
+	return_data = io.BytesIO()
+	with open('./' + directory + '/output.wasm', 'rb') as fo:
+		return_data.write(fo.read())
+		return_data.seek(0)
+
+	#sp.run(['rm', '-rf', directory])
+
+	return send_file(return_data, mimetype='application/wasm', attachment_filename='output.wasm')
+	#return send_file(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=False)
 
 @app.route('/favicon.ico')
 def favicon():
