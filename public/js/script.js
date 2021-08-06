@@ -1,5 +1,3 @@
-
-
 window.addEventListener('DOMContentLoaded', () => {
   embedButton();
   goButton();
@@ -23,6 +21,7 @@ function goButton() {
 
   });
 }
+
 
 function wasmFill(){
     const wasmOutput = document.getElementById('output');
