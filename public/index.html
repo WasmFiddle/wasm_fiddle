@@ -87,7 +87,9 @@
           <button type="button" class="btn btn-lg btn-success" id="go-btn">Go!</button>
         </div>
         <div class="col-5">
-          <pre id="output">This text is meant to be treated as sample output from a computer program.</pre>
+          <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 style="display: none;"></canvas>
+          <textarea id="output" rows="8" readonly></textarea>
+          <!-- <pre id="output">This text is meant to be treated as sample output from a computer program.</pre> -->
         </div>
       </div>
       <div class="row">
@@ -102,8 +104,6 @@
       & 
       <a href="https://www.pinterest.com/pin/581316264399850164/?d=t&mt=login">Pngtree</a>
     </p>
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 style="display: none;"></canvas>
-    <textarea id="woutput" rows="8"></textarea>
 
 
     <!-- This was spliced in from the output.html template -->
@@ -112,7 +112,7 @@
         preRun: [],
         postRun: [],
         print: (function() {
-          var element = document.getElementById('woutput');
+          var element = document.getElementById('output');
           if (element) element.value = ''; // clear browser cache
           return function(text) {
             if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');

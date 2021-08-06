@@ -3,6 +3,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   embedButton();
   goButton();
+  wasmFill();
 });
 
 function embedButton() {
@@ -29,6 +30,14 @@ function goButton() {
   });
 }
 
+function wasmFill(){
+    const wasmOutput = document.getElementById('output');
+    
+    wasmOutput.addEventListener('DOMContentLoaded', ()=>{
+        document.getElementById('output').innerHTML = wasmOutput.value;
+    });
+}
+
 
 function sendRunSource() {
     let fileData= packageSource();
@@ -52,7 +61,6 @@ function sendRunSource() {
           else {
               var wasmFileLoc = `/file/${data.wrkdir}`;
               allOfIt(wasmFileLoc);
-              document.getElementById('output').textContent = document.getElementById('woutput');
               
           /* WebAssembly.instantiateStreaming(fetch(`/file/${data.wrkdir}`), importObject).then(obj => {
             document.getElementById('output').innerHTML = obj.instance.exports.main();
@@ -352,7 +360,7 @@ function allOfIt(wasmFileLoc){
     //EDIT - Original was
     // var out = Module['print'] || console.log.bind(console);
     var out = Module['print'] || (function() {
-          var element = document.getElementById('woutput');
+          var element = document.getElementById('output');
           if (element) element.value = ''; // clear browser cache
           return function(text) {
             if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');

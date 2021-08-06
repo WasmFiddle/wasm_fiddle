@@ -81,6 +81,7 @@ function makeCreateReply(req, res) {
         })
         .then(() => {
         
+          // const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -s NO_EXIT_RUNTIME=1 -s FORCE_FILESYSTEM=1 -o output.js`;
           const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -o output.js`;
 
           // Run the command line in the folder that was created
@@ -109,16 +110,16 @@ function makeCreateReply(req, res) {
             // responds with the error message
             res.status(200).json({ error: `${err}`});
 
-            fsPromises.rmdir(path.join(__dirname, `/tempData/${workingFolder}`), {
-                recursive: true,
-              }, (error) => {
-                if (error) {
-                  console.log(error);
-                }
-                else {
-                  console.log(`Recursive: ${fID} Deleted!`);
-                }
-              });
+            // fsPromises.rmdir(path.join(__dirname, `/tempData/${workingFolder}`), {
+            //     recursive: true,
+            //   }, (error) => {
+            //     if (error) {
+            //       console.log(error);
+            //     }
+            //     else {
+            //       console.log(`Recursive: ${fID} Deleted!`);
+            //     }
+            //   });
         });
     })
     .catch((e) => console.log(e));
