@@ -18,3 +18,10 @@ operable program or batch file.
 operable program or batch file.
 'emcc' is not recognized as an internal or external command,
 operable program or batch file.
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
