@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, render_template
+from flask import Flask, request, send_from_directory, render_template, jsonify, after_this_request
 import subprocess as sp
 import os
 from datetime import datetime
@@ -20,21 +20,21 @@ def compile():
 		
 		# Save file in new directory
 		f = request.files['file']
-		file_path = os.path.join(app.root_path, current_time, f.filename)
+		file_path = os.path.join(current_time, f.filename)
 		print(file_path)
 		f.save(file_path)
 
-		# ensure a past files aren't served
-		for file_type in ['html', 'txt', 'js', 'wasm']:
-			# if file_type == 'html':
-				# os.system(f'echo > templates/output.{file_type}')
-			# else:
-			os.system(f'echo > output.{file_type}')
+		# # ensure a past files aren't served
+		# for file_type in ['html', 'txt', 'js', 'wasm']:
+			# # if file_type == 'html':
+				# # os.system(f'echo > templates/output.{file_type}')
+			# # else:
+			# os.system(f'echo > output.{file_type}')
 
 		
 		# build the command to compile the source file to WebAssembly
 		command = build_compile_script(os.path.join(current_time, f.filename), current_time).split()
-		# print(command)
+		print(command)
 
 		# compile to WebAssembly
 		if os.name == "nt":	# If machine is run on Windows 10
@@ -50,21 +50,24 @@ def compile():
 			if compile_log.stderr:
 				outfile.write(compile_log.stderr)
 
-		# Send the HTML file to the client
-		try:
-			# move new files to root directory
-			sp.run(['cp' ,f'./{current_time}/output.html', f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
-			# sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
-			# sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
 
-			# remove newly created folder after contents copied
-			sp.run(['rm', '-rf', f'{current_time}'])
-			# return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)
+		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 
+		
+		# # Send the HTML file to the client
+		# try:
+			# # move new files to root directory
+			# sp.run(['cp' ,f'./{current_time}/output.html', f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
+			# # sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
+			# # sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
+
+			# # remove newly created folder after contents copied
+			# sp.run(['rm', '-rf', f'{current_time}'])
+			# # return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)
+			# # return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
 			# return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
-			return send_from_directory(app.root_path, filename='output.js', as_attachment=True)
-		except FileNotFoundError:
-			return "File not found!"
-
+		# except FileNotFoundError:
+			# return "File not found!"
+		
 
 def build_compile_script(filename, directory):
 	# if it's a C/C++ file
@@ -91,18 +94,10 @@ def c_cpp_compile(filename, directory):
 def rust_compile(filename):
 	pass
 	
-@app.route('/output')
-def getHTML():
-	return send_from_directory(app.root_path, filename='output.js', as_attachment=False)
-		
-@app.route('/output.js')
-def getJS():
-	return send_from_directory(app.root_path, filename='output.js', as_attachment=False)
-	
-@app.route('/output.wasm')
-def getWASM():
-	return send_from_directory(app.root_path, filename='output.wasm', as_attachment=False)
-
+@app.route('/file/<directory>', methods=['GET'])
+def getWASM(directory):	
+	print(directory)
+	return send_from_directory(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=True)
 
 @app.route('/favicon.ico')
 def favicon():
