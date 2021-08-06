@@ -49,7 +49,15 @@ function syncEditor(){
 }
 
 function existingContent(){
+    seedEditor();
     update(document.getElementById("editing").value);
+}
+
+function seedEditor(){
+    const editor = document.getElementById("editing");
+    if (editor.value === ""){
+        editor.value = '#include<stdio.h>\n\nint main(){\n    printf("Hello from WASM Fiddle!\\n");\n    return 0;\n}';
+    }
 }
 
 // use this to update the highlighting
