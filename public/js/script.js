@@ -19,12 +19,6 @@ function embedFiddle() {
 function goButton() {
   let goBtn = document.getElementById('go-btn');
   goBtn.addEventListener('click', () => {
-    //sendFile();
-
-    // addScript = document.createElement('script')
-    // addScript.setAttribute('src',`js/output.js`);
-    // document.body.appendChild(addScript); 
-
     sendRunSource();
 
   });
@@ -61,14 +55,6 @@ function sendRunSource() {
           else {
               var wasmFileLoc = `/file/${data.wrkdir}`;
               allOfIt(wasmFileLoc);
-              
-          /* WebAssembly.instantiateStreaming(fetch(`/file/${data.wrkdir}`), importObject).then(obj => {
-            document.getElementById('output').innerHTML = obj.instance.exports.main();
-             console.log(obj.instance.exports.main())}); */
-             
-             /* let addScript = document.createElement('script')
-             addScript.setAttribute('src',`http://localhost:8080/jsfiles/${data.wrkdir}`);
-             document.body.appendChild(addScript); */
 
           }
 
@@ -86,8 +72,7 @@ function sendRunSource() {
     var sourceFile = new File([sourceText], `main.${fileType}`, {
       type: 'text/plain',
     });
-    // console.log(sourceFile);
-  
+ 
     var fileData = new FormData();
     fileData.append('file', sourceFile);
     fileData.append('filetype', `${fileType}`);
