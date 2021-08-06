@@ -4,6 +4,8 @@ You will need to ensure you have npm and Node.js installed on your computer
 
 After those have been installed:
 
+-Install the associated node modules by entering 'npm install'
+
 -To run in development mode type 'npm run start-dev' and then navigate to 'http://localhost:8080/'
 
 This will run the server via nodemon, so any changes made to the .js files will automatically restart the server
