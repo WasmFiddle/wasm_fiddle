@@ -43,16 +43,20 @@ def compile():
 		else:
 			compile_log = sp.run(command, capture_output=True, text=True)
 
-		# send stdout & stderr to text file
-		with open('output.txt', 'a') as outfile:
-			if compile_log.stdout:
-				outfile.write(compile_log.stdout)
+		# save output to send as error if compile fails
+		error_text = ''
+		if compile_log.stdout:
+			error_text += compile_log.stdout
 
-			if compile_log.stderr:
-				outfile.write(compile_log.stderr)
+		if compile_log.stderr:
+			error_text += compile_log.stderr
 
+		if compile_log.returncode == 0:
+			data = {'wrkdir':current_time}
+		else:
+			data = {'err': error_text}
 
-		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 
+		return jsonify(data), 200, {'ContentType':'application/json'} 
 		
 		# # Send the HTML file to the client
 		# try:
@@ -88,9 +92,8 @@ def c_cpp_compile(filename, directory):
 	s_flags += ' -s EXPORTED_FUNCTIONS=["_main"] '
 	rename += f' -o {directory}/output.js '
 	#template += ' --shell-file ./templates/emscripten_template.html'
-	#const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -o output.js`;
+
 	return f'emcc {filename} {s_flags} {rename} {verbose} {template}'
-	#return 'emcc {} -s EXPORTED_FUNCTIONS=["_main"] -o {}/output.js'.format(filename, directory)
 
 
 def rust_compile(filename):
