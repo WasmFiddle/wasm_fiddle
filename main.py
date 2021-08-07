@@ -22,7 +22,7 @@ def compile():
 		# Save file in new directory
 		f = request.files['file']
 		file_path = os.path.join(current_time, f.filename)
-		print(file_path)
+		# print(file_path)
 		f.save(file_path)
 		
 		# build the command to compile the source file to WebAssembly
@@ -62,7 +62,7 @@ def build_compile_script(filename, directory):
 
 
 def c_cpp_compile(filename, directory):
-	rename, verbose, s_flags, template = '', '', '', ''
+	rename, s_flags, template = '', '', '', ''
 	s_flags += ' -s ENVIRONMENT=web '
 	s_flags += ' -s EXIT_RUNTIME=1 '
 	s_flags += ' -s FILESYSTEM=1 '
@@ -70,7 +70,7 @@ def c_cpp_compile(filename, directory):
 	rename += f' -o {directory}/output.js '
 	#template += ' --shell-file ./templates/emscripten_template.html'
 
-	return f'emcc {filename} {s_flags} {rename} {verbose} {template}'
+	return f'emcc {filename} {s_flags} {rename} {template}'
 
 
 def rust_compile(filename):
