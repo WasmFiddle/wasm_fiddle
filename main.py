@@ -27,7 +27,7 @@ def compile():
 		
 		# build the command to compile the source file to WebAssembly
 		command = build_compile_script(os.path.join(current_time, f.filename), current_time).split()
-		print(command)
+		# print(command)
 
 		# compile to WebAssembly
 		if os.name == "nt":	# If machine is run on Windows 10
@@ -36,16 +36,17 @@ def compile():
 			compile_log = sp.run(command, capture_output=True, text=True)
 
 		# send stdout & stderr to text file
-		with open('output.txt', 'a') as outfile:
-			returnObject = {}
+		returnObject = {}
+		if compile_log.returncode != 0:
 			if compile_log.stdout:
-				outfile.write(compile_log.stdout)
 				returnObject['warning'] = compile_log.stdout
 
 			if compile_log.stderr:
-				outfile.write(compile_log.stderr)
 				returnObject['error'] = compile_log.stderr
-				return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
+		
+
+			sp.run(['rm', '-rf', current_time])
+			return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
 
 		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 		
 
@@ -85,8 +86,8 @@ def getWASM(directory):
 		return_data.write(fo.read())
 		return_data.seek(0)
 
-	#sp.run(['rm', '-rf', directory])
-	#os.remove(directory)
+	sp.run(['rm', '-rf', directory])
+	# os.remove(directory)
 
 	return send_file(return_data, mimetype='application/wasm', attachment_filename='output.wasm')
 	#return send_file(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=False)
