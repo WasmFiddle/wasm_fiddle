@@ -62,7 +62,7 @@ def build_compile_script(filename, directory):
 
 
 def c_cpp_compile(filename, directory):
-	rename, s_flags, template = '', '', '', ''
+	rename, s_flags, template = '', '', ''
 	s_flags += ' -s ENVIRONMENT=web '
 	s_flags += ' -s EXIT_RUNTIME=1 '
 	s_flags += ' -s FILESYSTEM=1 '
