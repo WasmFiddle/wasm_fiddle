@@ -25,3 +25,34 @@ emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<cla
 emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
 emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
 emcc: error: setting `EXPORTED_FUNCTIONS` expects `<class 'list'>` but got `<class 'str'>`
+'emcc' is not recognized as an internal or external command,
+operable program or batch file.
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+emcc: error: undefined exported symbol: "_main" [-Wundefined] [-Werror]
+temp_194838\main.cpp:2:8: error: use of undeclared identifier 'test'
+printf(test);
+       ^
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat temp_194838\main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_635khy5g\main_0.o' failed (returned 1)
+temp_195409\main.cpp:5:14: error: expected '}'
+    return 0;
+             ^
+temp_195409\main.cpp:3:11: note: to match this '{'
+int main(){
+          ^
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat temp_195409\main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_j_u6stv2\main_0.o' failed (returned 1)
+temp_195424\main.cpp:5:12: error: cannot initialize return object of type 'int' with an lvalue of type 'const char [5]'
+    return "test";
+           ^~~~~~
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat temp_195424\main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_vhr8llzh\main_0.o' failed (returned 1)
+temp_195516\main.cpp:3:1: error: C++ requires a type specifier for all declarations
+main(){
+^
+1 error generated.
+emcc: error: '"C:/Users/ridin/Dropbox/OSU CS/CS 467/wasm_file_use/emsdk/upstream/bin\clang++.exe" -target wasm32-unknown-emscripten -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=25 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration -Xclang -iwithsysroot/include/SDL "--sysroot=C:\Users\ridin\Dropbox\OSU CS\CS 467\wasm_file_use\emsdk\upstream\emscripten\cache\sysroot" -Xclang -iwithsysroot/include\compat temp_195516\main.cpp -c -o C:\Users\ridin\AppData\Local\Temp\emscripten_temp_r5qxe9nc\main_0.o' failed (returned 1)

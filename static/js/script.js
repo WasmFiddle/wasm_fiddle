@@ -44,10 +44,11 @@ function sendRunSource() {
 	}).then((response) => {
 		return response.json();
 	}).then((data) =>{
-		console.log(data);
 		if(data.error){
-			// This might need to be .textContent, but I havne't had the time to check
-			document.getElementById('output').innerHTML = data.error;
+			document.getElementById('output').value = data.error;
+			if (data.warning) {
+				document.getElementById('output').value += '\n' + data.warning
+			}
 		}
 		else {
 			var wasmFileLoc = `/file/${data.wrkdir}`;

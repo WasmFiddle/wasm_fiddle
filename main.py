@@ -24,14 +24,6 @@ def compile():
 		file_path = os.path.join(current_time, f.filename)
 		print(file_path)
 		f.save(file_path)
-
-		# # ensure a past files aren't served
-		# for file_type in ['html', 'txt', 'js', 'wasm']:
-			# # if file_type == 'html':
-				# # os.system(f'echo > templates/output.{file_type}')
-			# # else:
-			# os.system(f'echo > output.{file_type}')
-
 		
 		# build the command to compile the source file to WebAssembly
 		command = build_compile_script(os.path.join(current_time, f.filename), current_time).split()
@@ -45,30 +37,18 @@ def compile():
 
 		# send stdout & stderr to text file
 		with open('output.txt', 'a') as outfile:
+			returnObject = {}
 			if compile_log.stdout:
 				outfile.write(compile_log.stdout)
+				returnObject['warning'] = compile_log.stdout
 
 			if compile_log.stderr:
 				outfile.write(compile_log.stderr)
+				returnObject['error'] = compile_log.stderr
+				return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
 
 
-		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 
-		
-		# # Send the HTML file to the client
-		# try:
-			# # move new files to root directory
-			# sp.run(['cp' ,f'./{current_time}/output.html', f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
-			# # sp.run(['cp' ,f'./{current_time}/output.js', f'./{current_time}/output.wasm', app.root_path ])
-			# # sp.run(['cp' ,f'./{current_time}/output.html',  f'{app.root_path}/templates' ])
-
-			# # remove newly created folder after contents copied
-			# sp.run(['rm', '-rf', f'{current_time}'])
-			# # return send_from_directory(app.root_path, filename='./templates/output.html', as_attachment=True)
-			# # return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
-			# return send_from_directory(app.root_path, filename='output.html', as_attachment=True)
-		# except FileNotFoundError:
-			# return "File not found!"
-		
+		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 		
 
 def build_compile_script(filename, directory):
 	# if it's a C/C++ file
@@ -107,6 +87,7 @@ def getWASM(directory):
 		return_data.seek(0)
 
 	#sp.run(['rm', '-rf', directory])
+	#os.remove(directory)
 
 	return send_file(return_data, mimetype='application/wasm', attachment_filename='output.wasm')
 	#return send_file(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=False)
