@@ -57,6 +57,7 @@ function existingContent(){
 function seedEditor(){
     const editor = document.getElementById("editing");
 
+    // if the fiddle is in an iframe
     if (window.self !== window.top){
         let queryStrings = location.href.split('?')[1].split('&');
 
