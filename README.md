@@ -1,5 +1,5 @@
 ###### Flask Backend
-This is built to be containerized into a Dockerfile using Dockerfile. To build a Docker image, enter the commands:
+This is built to be containerized into a Dockerfile using Docker (install it from https://docs.docker.com/get-docker/). To build a Docker image, enter the commands:
 ```
 docker build -t docker-file-name .
 docker run -d --name image-name -P docker-file-name
