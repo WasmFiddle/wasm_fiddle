@@ -19,9 +19,9 @@ function embedContent(){
 
 function addFiddleContent(){
 	const wasmIframe = document.getElementById('code-link');
-	const fiddleContent = document.getElementById('editing').value;
+	const fiddleContent = document.getElementById('editing').value.trim();
 
-	wasmIframe.innerText = `<iframe title="WASMFiddle-iFrame" id="wasm-embedded" width="300" height="300" src="http://34.106.253.95:8000/?fiddle_content=${fiddleContent}"></iframe>`;
+	wasmIframe.innerText = `<iframe title="WASMFiddle-iFrame" id="wasm-embedded" width="100%" height="100%" src="http://localhost:8000/?fiddle_content=${btoa(fiddleContent).slice(0,-2)}"</iframe>`;
 }
 
 function copyLink() {

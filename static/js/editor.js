@@ -56,12 +56,14 @@ function existingContent(){
 
 function seedEditor(){
     const editor = document.getElementById("editing");
-    const params = window.location.search;
-    const fiddle_content = new URLSearchParams(params).get("fiddle_content");
-    
-    // if there is content in a query string, load that
-    if (fiddle_content != null){
-        editor.value = fiddle_content    
+
+    if (window.self !== window.top){
+        let queryStrings = location.href.split('?')[1].split('&');
+
+        queryStrings.forEach((pair)=>{
+            [key, content] = pair.split('=');
+            if (key == 'fiddle_content') editor.value = atob(content);
+        })
     
     // otherwise seed the fiddle with simple C code
     } else if (editor.value === "") {
