@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     langSelector();
     syncEditor();
     updateLang();
+    rustIsntHere();
 });
 
 function langSelector(){
@@ -176,4 +177,13 @@ function autoIndent(element, event){
         cursorPlacement(element, cursorPos + spaces + 1);
         update(element.value);
     }
+}
+
+function rustIsntHere(){
+    const rustButton = document.getElementById("option4");
+
+    rustButton.addEventListener('click', ()=>{
+        alert('Rust capabilities are not yet configured for WASM Fiddle');
+        document.getElementById("option2").checked = true;
+    })
 }
