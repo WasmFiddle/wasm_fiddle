@@ -19,16 +19,16 @@ def compile():
 		# Create directory	
 		alphabet = string.ascii_letters + string.digits
 		directory = ''.join(secrets.choice(alphabet) for i in range(8))
-		os.mkdir(directory)
+		os.mkdir(os.path.join('tempData', directory))
 		
 		# Save file in new directory
 		f = request.files['file']
-		file_path = os.path.join(directory, f.filename)
+		file_path = os.path.join('tempData', directory, f.filename)
 		# print(file_path)
 		f.save(file_path)
 		
 		# build the command to compile the source file to WebAssembly
-		command = build_compile_script(os.path.join(directory, f.filename), directory).split()
+		command = build_compile_script(os.path.join('tempData', directory, f.filename), os.path.join('tempData', directory)).split()
 		# print(command)
 
 		# compile to WebAssembly
@@ -84,7 +84,7 @@ def getWASM(directory):
 
 
 	return_data = io.BytesIO()
-	with open('./' + directory + '/output.wasm', 'rb') as fo:
+	with open('./' + 'tempData/' + directory + '/output.wasm', 'rb') as fo:
 		return_data.write(fo.read())
 		return_data.seek(0)
 
