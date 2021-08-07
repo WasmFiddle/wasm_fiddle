@@ -36,8 +36,8 @@ def compile():
 			compile_log = sp.run(command, capture_output=True, text=True)
 
 		# send stdout & stderr to text file
-		returnObject = {}
 		if compile_log.returncode != 0:
+			returnObject = {}
 			if compile_log.stdout:
 				returnObject['warning'] = compile_log.stdout
 
@@ -63,8 +63,8 @@ def build_compile_script(filename, directory):
 
 def c_cpp_compile(filename, directory):
 	rename, s_flags, template = '', '', ''
-	s_flags += ' -s ENVIRONMENT=web '
 	s_flags += ' -s EXIT_RUNTIME=1 '
+	s_flags += ' -s ENVIRONMENT=web '
 	s_flags += ' -s FILESYSTEM=1 '
 	s_flags += ' -s EXPORTED_FUNCTIONS=["_main"] '
 	rename += f' -o {directory}/output.js '
