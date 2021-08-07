@@ -2,7 +2,9 @@ from flask import Flask, request, send_file, send_from_directory, render_templat
 import subprocess as sp
 import os
 import io
-from datetime import datetime
+import string
+import secrets
+
 
 app = Flask(__name__, static_folder="static")
 
@@ -14,19 +16,19 @@ def index():
 def compile():
 	# Get input code file, return compiled .wasm file
 	if request.method == 'POST':	
-		# Create directory
-		now = datetime.now()
-		current_time = 'temp_' + now.strftime("%H%M%S")
-		os.mkdir(current_time)
+		# Create directory	
+		alphabet = string.ascii_letters + string.digits
+		directory = ''.join(secrets.choice(alphabet) for i in range(8))
+		os.mkdir(os.path.join('tempData', directory))
 		
 		# Save file in new directory
 		f = request.files['file']
-		file_path = os.path.join(current_time, f.filename)
+		file_path = os.path.join('tempData', directory, f.filename)
 		# print(file_path)
 		f.save(file_path)
 		
 		# build the command to compile the source file to WebAssembly
-		command = build_compile_script(os.path.join(current_time, f.filename), current_time).split()
+		command = build_compile_script(os.path.join('tempData', directory, f.filename), os.path.join('tempData', directory)).split()
 		# print(command)
 
 		# compile to WebAssembly
@@ -45,10 +47,10 @@ def compile():
 				returnObject['error'] = compile_log.stderr
 		
 
-			sp.run(['rm', '-rf', current_time])
+			sp.run(['rm', '-rf', directory])
 			return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
 
-		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 		
+		return jsonify({'wrkdir':directory}), 200, {'ContentType':'application/json'} 		
 
 
 def build_compile_script(filename, directory):
@@ -82,7 +84,7 @@ def getWASM(directory):
 
 
 	return_data = io.BytesIO()
-	with open('./' + directory + '/output.wasm', 'rb') as fo:
+	with open('./' + 'tempData/' + directory + '/output.wasm', 'rb') as fo:
 		return_data.write(fo.read())
 		return_data.seek(0)
 

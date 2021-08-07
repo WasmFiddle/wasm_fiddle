@@ -43,6 +43,8 @@ function goButton() {
 }
 
 function sendRunSource() {
+	swapButton();
+	
 	let fileData= packageSource();
 
 	var importObject = {
@@ -67,10 +69,15 @@ function sendRunSource() {
 			allOfIt(wasmFileLoc);
 
 		}
-
-	}).catch(err=>console.log(err));
+		swapButton();
+	}).catch(err=> {
+		console.log(err);
+		swapButton();
+	});
+	
 }
 
+<<<<<<< HEAD
 function packageSource(){
     const sourceText = document.getElementById('editing').value;
     let fileType;
@@ -88,6 +95,44 @@ function packageSource(){
   
     return fileData;
 }
+=======
+
+
+
+
+function packageSource(){
+	const sourceText = document.getElementById('editing').value;
+	let fileType;
+	document.getElementsByName('options').forEach((element) => {
+	  if (element.checked) fileType = element.value == 'rust' ? 'rs' : 'cpp';
+	});
+
+	var sourceFile = new File([sourceText], `main.${fileType}`, {
+	  type: 'text/plain',
+	});
+
+	var fileData = new FormData();
+	fileData.append('file', sourceFile);
+	fileData.append('filetype', `${fileType}`);
+
+	return fileData;
+}
+
+async function swapButton() {
+	var goButton = document.getElementById("go-btn");
+
+	if (goButton.disabled) {
+		goButton.disabled = false;
+		goButton.innerText = 'Go!';
+	} else {
+		goButton.disabled = true;
+		goButton.innerText = 'Loading...';
+	}
+}
+
+
+
+>>>>>>> aeaefc9e31979f26b8909673197637f5438232d2
 
 function allOfIt(wasmFileLoc){
     
