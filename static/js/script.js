@@ -1,17 +1,38 @@
 window.addEventListener('DOMContentLoaded', () => {
-  embedButton();
   goButton();
-  wasmFill();
+  copyCodeButton();
+  embedContent();
 });
 
-function embedButton() {
-  document.getElementById('btn-embed').addEventListener('click', () => {
-    embedFiddle();
-  });
+function copyCodeButton(){
+    document.getElementById('copyBtn').addEventListener('click', ()=>{
+        copyLink();
+    });
 }
 
-function embedFiddle() {
-  alert('Embed some stuff!');
+function embedContent(){
+	const embedBtn = document.getElementById("btn-embed");
+	embedBtn.addEventListener('click', ()=>{
+		addFiddleContent()
+	});
+}
+
+function addFiddleContent(){
+	const wasmIframe = document.getElementById('code-link');
+	const fiddleContent = document.getElementById('editing').value;
+
+	wasmIframe.innerText = `<iframe title="WASMFiddle-iFrame" id="wasm-embedded" width="300" height="300" src="http://34.106.253.95:8000/?fiddle_content=${fiddleContent}"></iframe>`;
+}
+
+function copyLink() {
+    // Code adapted from https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
+    var range = document.createRange();
+    range.selectNode(document.getElementById("code-link"));
+    window.getSelection().removeAllRanges(); // clear current selection
+    window.getSelection().addRange(range); // to select text
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();// to deselect
+    alert("Code Copied");
 }
 
 function goButton() {
@@ -20,15 +41,6 @@ function goButton() {
 		sendRunSource();
 	});
 }
-
-function wasmFill(){
-    const wasmOutput = document.getElementById('output');
-    
-    wasmOutput.addEventListener('DOMContentLoaded', ()=>{
-        document.getElementById('output').innerHTML = wasmOutput.value;
-    });
-}
-
 
 function sendRunSource() {
 	let fileData= packageSource();
@@ -59,11 +71,7 @@ function sendRunSource() {
 	}).catch(err=>console.log(err));
 }
 
-
-
-
-
-  function packageSource(){
+function packageSource(){
     const sourceText = document.getElementById('editing').value;
     let fileType;
     document.getElementsByName('options').forEach((element) => {
@@ -79,12 +87,7 @@ function sendRunSource() {
     fileData.append('filetype', `${fileType}`);
   
     return fileData;
-  }
-
-
-
-
-
+}
 
 function allOfIt(wasmFileLoc){
     
@@ -2335,6 +2338,4 @@ function allOfIt(wasmFileLoc){
 	if (Module['noInitialRun']) shouldRunNow = false;
 
 	run();
-
-
 }
