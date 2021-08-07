@@ -47,8 +47,8 @@ def compile():
 				returnObject['error'] = compile_log.stderr
 				return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
 
-
 		return jsonify({'wrkdir':current_time}), 200, {'ContentType':'application/json'} 		
+
 
 def build_compile_script(filename, directory):
 	# if it's a C/C++ file
@@ -68,9 +68,8 @@ def c_cpp_compile(filename, directory):
 	s_flags += ' -s EXPORTED_FUNCTIONS=["_main"] '
 	rename += f' -o {directory}/output.js '
 	#template += ' --shell-file ./templates/emscripten_template.html'
-	#const cmdLine = `emcc ${fileName} -s EXPORTED_FUNCTIONS="['_main']" -o output.js`;
+
 	return f'emcc {filename} {s_flags} {rename} {verbose} {template}'
-	#return 'emcc {} -s EXPORTED_FUNCTIONS=["_main"] -o {}/output.js'.format(filename, directory)
 
 
 def rust_compile(filename):
