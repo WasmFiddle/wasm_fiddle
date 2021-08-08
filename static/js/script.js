@@ -21,7 +21,7 @@ function addFiddleContent(){
 	const wasmIframe = document.getElementById('code-link');
 	const fiddleContent = document.getElementById('editing').value.trim();
 
-	wasmIframe.innerText = `<iframe title="WASMFiddle-iFrame" id="wasm-embedded" width="100%" height="100%" src="${window.location.href}?fiddle_content=${btoa(fiddleContent).slice(0,-2)}"</iframe>`;
+	wasmIframe.innerText = `<iframe title="WASMFiddle-iFrame" id="wasm-embedded" width="100%" height="100%" src="${window.location.href}?fiddle_content=${btoa(fiddleContent).slice(0,-2)}"></iframe>`;
 }
 
 function copyLink() {
