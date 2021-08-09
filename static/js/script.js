@@ -43,6 +43,7 @@ function goButton() {
 }
 
 function sendRunSource() {
+	// Prevents click while waiting for server response, next 2 calls return click-ability
 	swapButton();
 	
 	let fileData= packageSource();
@@ -51,7 +52,7 @@ function sendRunSource() {
 		imports: { imported_func: arg => console.log(arg) }
 	};
 
-	//This will need to be modified for production
+	// POST request to server, sending input data and accepting location of WASM file
 	fetch('/compile', {
 		method: 'POST',
 		body: fileData
@@ -65,9 +66,9 @@ function sendRunSource() {
 			}
 		}
 		else {
+			// Run the WASM file
 			var wasmFileLoc = `/file/${data.wrkdir}`;
 			allOfIt(wasmFileLoc);
-
 		}
 		swapButton();
 	}).catch(err=> {
@@ -77,6 +78,7 @@ function sendRunSource() {
 	
 }
 
+// Takes input editing textarea and packages it into file based on language selected
 function packageSource(){
 	const sourceText = document.getElementById('editing').value;
 	let fileType;
@@ -95,6 +97,7 @@ function packageSource(){
 	return fileData;
 }
 
+// Changes Go! button to Loading... during request
 async function swapButton() {
 	var goButton = document.getElementById("go-btn");
 
@@ -107,6 +110,12 @@ async function swapButton() {
 	}
 }
 
+// JavaScript Output from Emscripten using following flags:
+// s_flags += ' -s EXIT_RUNTIME=1 '
+// s_flags += ' -s ENVIRONMENT=web '
+// s_flags += ' -s FILESYSTEM=1 '
+// s_flags += ' -s EXPORTED_FUNCTIONS=["_main"] '
+// Minor changes made to accept server WASM file in specific location
 function allOfIt(wasmFileLoc){
     
 	// The Module object: Our interface to the outside world. We import

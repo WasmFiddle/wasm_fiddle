@@ -5,14 +5,15 @@ import io
 import string
 import secrets
 
-
 app = Flask(__name__, static_folder="static")
 
+# Home page, returns index
 @app.route('/')
 def index():
 	return render_template('index.html')
 
-@app.route('/compile', methods=['GET', 'POST'])
+# Accepts a C/C++ file and returns location of WASM on server
+@app.route('/compile', methods=['POST'])
 def compile():
 	# Get input code file, return compiled .wasm file
 	if request.method == 'POST':	
@@ -49,10 +50,12 @@ def compile():
 
 			sp.run(['rm', '-rf', directory])
 			return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
-
+			
+		# Returns the name of the newly created directory to access WASM file
 		return jsonify({'wrkdir':directory}), 200, {'ContentType':'application/json'} 		
 
-
+# Accepts the name of the file and the location of directory, returns completed command
+# based on if Cpp or Rust
 def build_compile_script(filename, directory):
 	# if it's a C/C++ file
 	if filename.split('.')[1] == 'cpp': 
@@ -62,7 +65,7 @@ def build_compile_script(filename, directory):
 	else:
 		return rust_compile(filename)
 
-
+# Accepts the name of the file and the location of directory, returns completed C++ command 
 def c_cpp_compile(filename, directory):
 	rename, s_flags, template = '', '', ''
 	s_flags += ' -s EXIT_RUNTIME=1 '
@@ -74,14 +77,13 @@ def c_cpp_compile(filename, directory):
 
 	return f'emcc {filename} {s_flags} {rename} {template}'
 
-
+# Rust not yet implemented
 def rust_compile(filename):
 	pass
 	
-# Send WASM to client upon request in JS
+# Return WASM to client
 @app.route('/file/<directory>', methods=['GET'])
 def getWASM(directory):	
-
 
 	return_data = io.BytesIO()
 	with open('./' + 'tempData/' + directory + '/output.wasm', 'rb') as fo:
@@ -92,12 +94,13 @@ def getWASM(directory):
 	# os.remove(directory)
 
 	return send_file(return_data, mimetype='application/wasm', attachment_filename='output.wasm')
-	#return send_file(app.root_path, filename=f'./{directory}/output.wasm', as_attachment=False)
 
+# Favicon support
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 
 	'img/logo.svg',mimetype='image/svg+xml')
 
+# LocalHost development
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

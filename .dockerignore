@@ -2,4 +2,3 @@ __pycache__
 env
 .git
 emsdk
-env/*
