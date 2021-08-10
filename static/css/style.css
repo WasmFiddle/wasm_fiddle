@@ -63,7 +63,7 @@ a {
 
 .code-editor {
     position: relative;
-    height: 70vh;
+    height: 60vh;
 }
 
 #go-btn{ width: 50%;}
@@ -121,4 +121,11 @@ a {
 @keyframes spin {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
+}
+
+@media (max-width: 567px) {
+    .code-editor {
+        position: relative;
+        height: 45vh;
+    }
 }
