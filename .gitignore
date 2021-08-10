@@ -1,5 +1,7 @@
-# Git Ignore file for NPM
+# Git ignore for python
+env/*
+env
 
-node_modules
-package-lock.json
-*.log
+# Git ignore for emscripten
+emsdk/*
+emsdk

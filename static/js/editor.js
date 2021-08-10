@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     langSelector();
     syncEditor();
     updateLang();
+    rustIsntHere();
 });
 
 function langSelector(){
@@ -49,7 +50,26 @@ function syncEditor(){
 }
 
 function existingContent(){
+    seedEditor();
     update(document.getElementById("editing").value);
+}
+
+function seedEditor(){
+    const editor = document.getElementById("editing");
+
+    // if the fiddle is in an iframe
+    if (window.self !== window.top){
+        let queryStrings = location.href.split('?')[1].split('&');
+
+        queryStrings.forEach((pair)=>{
+            [key, content] = pair.split('=');
+            if (key == 'fiddle_content') editor.value = atob(content);
+        })
+    
+    // otherwise seed the fiddle with simple C code
+    } else if (editor.value === "") {
+        editor.value = '#include<stdio.h>\n\nint main(){\n    printf("Hello from WASM Fiddle!");\n    return 0;\n}';
+    }
 }
 
 // use this to update the highlighting
@@ -168,4 +188,13 @@ function autoIndent(element, event){
         cursorPlacement(element, cursorPos + spaces + 1);
         update(element.value);
     }
+}
+
+function rustIsntHere(){
+    const rustButton = document.getElementById("option4");
+
+    rustButton.addEventListener('click', ()=>{
+        alert('Rust capabilities are not yet configured for WASM Fiddle');
+        document.getElementById("option2").checked = true;
+    })
 }

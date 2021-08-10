@@ -28,6 +28,7 @@
 }
 
 #editing, #highlighting {
+    margin: 0;
     position: absolute;
     box-sizing: border-box;
     top: 0;
@@ -48,7 +49,6 @@
     z-index: 1;
 
     /* sizing */
-    margin-top: .5em;
     padding: 1em 0 1em 60.8px;
     outline: none;
     resize: none;
