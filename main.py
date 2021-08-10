@@ -38,7 +38,7 @@ def compile():
 		else:
 			compile_log = sp.run(command, capture_output=True, text=True)
 
-		# send stdout & stderr to text file
+		# Send stdout & stderr to text file and as object to client
 		if compile_log.returncode != 0:
 			returnObject = {}
 			if compile_log.stdout:
@@ -47,8 +47,7 @@ def compile():
 			if compile_log.stderr:
 				returnObject['error'] = compile_log.stderr
 		
-
-			sp.run(['rm', '-rf', directory])
+			sp.run(['rm', '-rf', os.path.join('tempData', directory)])
 			return jsonify(returnObject), 200, {'ContentType':'application/json'} 	 
 			
 		# Returns the name of the newly created directory to access WASM file
@@ -90,8 +89,7 @@ def getWASM(directory):
 		return_data.write(fo.read())
 		return_data.seek(0)
 
-	sp.run(['rm', '-rf', directory])
-	# os.remove(directory)
+	sp.run(['rm', '-rf', os.path.join('tempData', directory)])
 
 	return send_file(return_data, mimetype='application/wasm', attachment_filename='output.wasm')
 
